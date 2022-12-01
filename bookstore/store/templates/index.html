@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html>
-<body>
+  <body>
+    <h1>Books</h1>
 
-<h1>Hello World!</h1>
-<p>Welcome to my first Django project!</p>
+    <table border="1">
+        <tr>
+            <td>id</td>
+            <td>x.book_name</td>
+            <td>x.stock_num</td>
+          </tr>
+      {% for x in books %}
+      <tr>
+        <td><a href="update/{{ x.id }}">Edit</a></td>
+        <td>{{ x.book_name }}</td>
+        <td>{{ x.stock_num }}</td>
+        <td>{{ x.in_stock }}</td>
+        <td><a href="delete/{{ x.id }}">delete</a></td>
+      </tr>
+      {% endfor %}
+    </table>
 
-</body>
+    <a href="add/">Add books</a>
+
+  </body>
 </html>

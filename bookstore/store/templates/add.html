@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="addrecord" content="add a record into mysql" />
+    <title>Add books</title>
+</head>
+
+<body>
+    <h1>Add books</h1>
+
+    <form action="addrecord/" method="post">
+        {% csrf_token %}
+
+        <label for="bname">Book name:</label>
+        <input type="text" id="bname" name="book_name"/>
+
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>

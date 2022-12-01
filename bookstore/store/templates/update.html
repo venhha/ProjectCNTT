@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edit Books</title>
+</head>
+<body>
+    <form action="updaterecord/{{ book.id }}" method="post">
+        {% csrf_token %}
+        <label for="bname">Book name:</label>
+        <input type="text" id="bname" name="name" value="{{book.book_name}}"><br>
+        
+        <label for="stock">Stock number:</label>
+        <input type="text" id="stock" name="num" value="{{book.stock_num}}"><br>
+
+        <input type="submit" value="Submit">
+        </form>
+</body>
+</html>
