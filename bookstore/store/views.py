@@ -44,3 +44,12 @@ def updaterecord(request, id):
     book.stock_num = num
     book.save()
     return HttpResponseRedirect(reverse('index'))
+
+
+def testing(request):
+    mybooks = Books.objects.all()
+    template = loader.get_template('t.html')
+    context = {
+        'mybooks': mybooks,
+    }
+    return HttpResponse(template.render(context, request))

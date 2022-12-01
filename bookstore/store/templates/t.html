@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="{% static 'mystyle.css' %}">
+<table border='1' class="center">
+  <tr>
+    <th>ID</th>
+    <th>Book name</th>
+    <th>Stock num</th>
+    <th>In Stock</th>
+  </tr>
+  {% for x in mybooks %}
+  <tr>
+    <td>{{ x.id }}</td>
+    <td>{{ x.book_name }}</td>
+    <td>{{ x.stock_num }}</td>
+    <td>{{ x.in_stock }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+</html>
