@@ -1,28 +1,26 @@
-<!DOCTYPE html>
-<html>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <body>
-    <h1>Books</h1>
+{% extends "base.html" %}
+{% block title %} HOME PAGE {% endblock title %}
 
-    <table border="1">
-        <tr>
-            <td>id</td>
-            <td>x.book_name</td>
-            <td>x.stock_num</td>
-          </tr>
-      {% for x in books %}
-      <tr>
-        <td><a href="update/{{ x.id }}">Edit</a></td>
-        <td>{{ x.book_name }}</td>
-        <td>{{ x.stock_num }}</td>
-        <td>{{ x.in_stock }}</td>
-        <td><a href="delete/{{ x.id }}">delete</a></td>
-      </tr>
-      {% endfor %}
-    </table>
+{% block book %}
+<h1>Books</h1>
+<table border="1">
+  <tr>
+    <td>id</td>
+    <td>x.book_name</td>
+    <td>x.stock_num</td>
+  </tr>
+  {% for x in books %}
+  <tr>
+    <td><a href="update/{{ x.id }}">Edit</a></td>
+    <td>{{ x.book_name }}</td>
+    <td>{{ x.stock_num }}</td>
+    <td>{{ x.in_stock }}</td>
+    <td><a href="delete/{{ x.id }}">delete</a></td>
+  </tr>
+  {% endfor %}
+</table>
 
-    <a href="add/">Add books</a>
+<a href="add/">Add books</a>
+{% endblock book %}
 
-  </body>
-</html>
+block
