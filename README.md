@@ -3,5 +3,7 @@
 <ul>
     <li>Hà Nhật Vềnh 20110599</li>
     <li>Lý Tiến Thành 20110566</li>
+    <br>
+    <br>
     <img src="BookStore_ERD.png" alt="BookStore_ERD">
 </ul>
