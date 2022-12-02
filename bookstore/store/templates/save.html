@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-sm bg-white navbar-dark">
+    <div class="container bg-info">
+      <a class="navbar-brand" href="#">
+        <img
+          src="{% static 'img/logo_main.png' %}"
+          alt="Store Logo"
+          style="width: 150px"
+          class="rounded-pill"
+        />
+      </a>
+      <div class="container">
+        <ul class="nav nav-tabs justify-content-start">
+          <li class="nav-item"><a class="nav-link" href="#">Link1</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link2</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link3</a></li>
+        </ul>
+        <ul class="nav justify-content-end">
+          <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Resister</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% block book %} {% endblock book %}

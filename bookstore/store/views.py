@@ -9,11 +9,11 @@ from .models import Books
 
 def index(request):
     books = Books.objects.all().values()
-    return render(request, 'index.html', context={'books': books})
+    return render(request, 'pages/index.html', context={'books': books})
 
 
 def add(request):
-    template = loader.get_template('add.html')
+    template = loader.get_template('pages/add.html')
     return HttpResponse(template.render({}, request))
 
 
@@ -22,18 +22,18 @@ def addrecord(request):
     book = Books()
     book.book_name = n
     book.save()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('pages/index'))
 
 
 def delete(request, id):
     book = Books.objects.get(id=id)
     book.delete()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('pages/index'))
 
 
 def update(request, id):
     book = Books.objects.get(id=id)
-    return render(request, 'update.html', context={'book': book})
+    return render(request, 'pages/update.html', context={'book': book})
 
 
 def updaterecord(request, id):
@@ -43,13 +43,5 @@ def updaterecord(request, id):
     book.book_name = name
     book.stock_num = num
     book.save()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('pages/index'))
 
-
-def testing(request):
-    mybooks = Books.objects.all()
-    template = loader.get_template('t.html')
-    context = {
-        'mybooks': mybooks,
-    }
-    return HttpResponse(template.render(context, request))
