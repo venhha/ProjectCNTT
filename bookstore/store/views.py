@@ -11,6 +11,8 @@ def index(request):
     books = Books.objects.all().values()
     return render(request, 'pages/index.html', context={'books': books})
 
+'''def index(request):
+    return render(request, 'pages/home.html')'''
 
 def add(request):
     template = loader.get_template('pages/add.html')
