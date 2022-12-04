@@ -1,0 +1,18 @@
+/* Make the image disappear when screen size small than 600px*/
+@media screen and (max-width: 600px) {
+    .myImageClass {display:none;}
+}
+
+
+body{
+    background-color: #fffffff4;
+}
+/*
+nav{
+    background-color: #2535adcd;
+}
+*/
+
+test{
+background-color: #000000cd;
+}

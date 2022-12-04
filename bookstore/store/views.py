@@ -5,14 +5,23 @@ from django.urls import reverse
 
 from .models import Books
 # Create your views here.
+def store(request):
+	context = {}
+	return render(request, 'store/store.html', context)
 
+def cart(request):
+	context = {}
+	return render(request, 'store/cart.html', context)
 
+def checkout(request):
+	context = {}
+	return render(request, 'store/checkout.html', context)
+
+'''
 def index(request):
     books = Books.objects.all().values()
     return render(request, 'pages/index.html', context={'books': books})
 
-'''def index(request):
-    return render(request, 'pages/home.html')'''
 
 def add(request):
     template = loader.get_template('pages/add.html')
@@ -46,4 +55,4 @@ def updaterecord(request, id):
     book.stock_num = num
     book.save()
     return HttpResponseRedirect(reverse('pages/index'))
-
+'''
