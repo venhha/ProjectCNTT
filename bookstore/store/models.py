@@ -40,8 +40,8 @@ class Category(models.Model):
 class Product(models.Model):
     pID = models.AutoField(primary_key=True)
     book_name = models.CharField(max_length=50)
-    auID = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
-    catID = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    auID = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
+    catID = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     book_price = models.IntegerField(default=0, null=False)
     book_stock = models.IntegerField(default=0, null=False)
     book_star = models.FloatField(null=True)
@@ -52,3 +52,39 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse("product_detail", kwargs={"pk": self.pk})
+    
+    
+class Order(models.Model):
+    oID = models.AutoField(primary_key=True)
+    pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+    quantity = models.IntegerField(null=False)
+
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("oder_detail", kwargs={"pk": self.pk})
+class Customer(models.Model):
+    cusID = models.AutoField(primary_key=True)
+    cus_name = models.CharField(max_length=50)
+    cus_addr = models.CharField(max_length=50)
+    cus_phone = models.CharField(max_length=12)
+    
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("customer_detail", kwargs={"pk": self.pk})
+
+class Invoice(models.Model):
+    iID = models.AutoField(primary_key=True)
+    oID = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+    cusID = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False)
+    
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("invoice_detail", kwargs={"pk": self.pk})
