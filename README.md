@@ -4,5 +4,5 @@
     <li>Hà Nhật Vềnh 20110599</li>
     <br>
     <br>
-    <img src="BookStore_ERD.png" alt="BookStore_ERD">
+    <img src="BookStore_ERD.png" alt="BookStore_ERD3">
 </ul>
