@@ -4,21 +4,35 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from store.models import *
 # Create your views here.
-    
+
+
 def store(request):
     books = Product.objects.all()
-    context = {'books':books}
+    context = {'books': books}
     return render(request, 'store/store.html', context)
 
 
 def cart(request):
-    orders = Order.objects.all()
-    context = {'orders':orders}
+
+    orders = Order.objects.filter(iID=3)
+        
+    total_items = sum([i.quantity for i in orders])
+    total_price = '{:,}'.format(sum([i.get_total for i in orders]))
+    
+    context = {'orders': orders, 'total_items': total_items,
+               'total_price': total_price}
+
     return render(request, 'store/cart.html', context)
 
 
 def checkout(request):
-    context = {}
+    orders = Order.objects.filter(iID=3)
+    total_items = sum([i.quantity for i in orders])
+    total_price = '{:,}'.format(sum([i.get_total for i in orders]))
+    
+    context = {'orders': orders, 'total_items': total_items,
+               'total_price': total_price}
+
     return render(request, 'store/checkout.html', context)
 
 

@@ -77,13 +77,16 @@ class Invoice(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.cusID.cus_name
 
     def get_absolute_url(self):
         return reverse("invoice_detail", kwargs={"pk": self.pk})
+    
+    
 class Order(models.Model):
     oID = models.AutoField(primary_key=True)
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+    iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(null=False)
 
     @property
