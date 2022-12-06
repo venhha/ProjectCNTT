@@ -1,21 +1,26 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
+#from django.template import loader
 from django.urls import reverse
-
-from .models import Books
+from store.models import *
 # Create your views here.
+    
 def store(request):
-	context = {}
-	return render(request, 'store/store.html', context)
+    books = Product.objects.all()
+    context = {'books':books}
+    return render(request, 'store/store.html', context)
+
 
 def cart(request):
-	context = {}
-	return render(request, 'store/cart.html', context)
+    orders = Order.objects.all()
+    context = {'orders':orders}
+    return render(request, 'store/cart.html', context)
+
 
 def checkout(request):
-	context = {}
-	return render(request, 'store/checkout.html', context)
+    context = {}
+    return render(request, 'store/checkout.html', context)
+
 
 '''
 def index(request):
