@@ -4,16 +4,16 @@
 {% block content %}
 
 <div class="row">
-	{% for book in books %}
+	{% for i in books %}
 	<div class="col-lg-3">
-		<img class="thumbnail" src="{{book.book_img.url}}">
+		<img class="thumbnail" src="{{i.book_img.url}}">
 		<div class="box-element product">
-			<h6><strong>{{book.book_name}} </strong></h6>
+			<h6><strong>{{i.book_name}} </strong></h6>
 			<hr>
 
-			<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
+			<button data-product={{i.pID}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
 			<a class="btn btn-outline-success" href="#">View</a>
-			<h4 style="display: inline-block; float: right"><strong>{{book.book_price}}đ</strong></h4>
+			<h4 style="display: inline-block; float: right"><strong>{{i.book_price}}đ</strong></h4>
 
 		</div>
 	</div>

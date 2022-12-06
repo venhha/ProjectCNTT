@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,  JsonResponse
+import json
 #from django.template import loader
-from django.urls import reverse
-from store.models import *
+#from django.urls import reverse
 # Create your views here.
-
+from store.models import *
 
 def store(request):
     books = Product.objects.all()
@@ -14,7 +14,7 @@ def store(request):
 
 def cart(request):
 
-    orders = Order.objects.filter(iID=3)
+    orders = Order.objects.filter(iID=4)
         
     total_items = sum([i.quantity for i in orders])
     total_price = '{:,}'.format(sum([i.get_total for i in orders]))
@@ -35,7 +35,28 @@ def checkout(request):
 
     return render(request, 'store/checkout.html', context)
 
+def updateItem(request):
+    data = json.loads(request.body)
+    productID = data['productID']
+    action = data['action']
+    
+    print('productID: ', productID)
+    print('Action: ', action)
+    
+    customer = request.user.customer
+    product = Product.objects.get(pID=productID)
+    invoice, created = Invoice.objects.get_or_create(cusID=customer)
+    orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
+    
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+    orderItem.save()
 
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+    return JsonResponse('Item was added', safe=False)
 '''
 def index(request):
     books = Books.objects.all().values()

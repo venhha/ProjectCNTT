@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -39,7 +39,7 @@ class Product(models.Model):
     book_description = models.CharField(max_length=254, null=True)
 
     def __str__(self):
-        return self.book_name
+        return str(self.book_name)
 
     def get_absolute_url(self):
         return reverse("product_detail", kwargs={"pk": self.pk})
@@ -61,6 +61,7 @@ class Author(models.Model):
 
 class Customer(models.Model):
     cusID = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete = models.CASCADE)
     cus_name = models.CharField(max_length=50)
     cus_addr = models.CharField(max_length=50)
     cus_phone = models.CharField(max_length=12)
@@ -87,7 +88,7 @@ class Order(models.Model):
     oID = models.AutoField(primary_key=True)
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
-    quantity = models.IntegerField(null=False)
+    quantity = models.IntegerField(null=False, default=0)
 
     @property
     def get_total(self):
@@ -95,10 +96,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return self.pID.book_name
+        return str(self.oID)
 
     def get_absolute_url(self):
         return reverse("oder_detail", kwargs={"pk": self.pk})
-
-
-
