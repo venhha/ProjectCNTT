@@ -1,10 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect,  JsonResponse
 import json
+
 #from django.template import loader
 #from django.urls import reverse
 # Create your views here.
-from store.models import *
+from .models import *
+from .forms import RegistrationForm
+
+
+def register(request):
+    form = RegistrationForm()
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    return render(request, 'store/register.html', {'form': form})
+
 
 def store(request):
     books = Product.objects.all()
@@ -45,6 +58,7 @@ def updateItem(request):
     
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
+    
     invoice, created = Invoice.objects.get_or_create(cusID=customer)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
     

@@ -5,9 +5,10 @@ for(var i = 0; i < updateBtn.length; i++){
         var productID = this.dataset.product
         //data-product={{i.pID}} data-action="add"
         var action = this.dataset.action
+        
         console.log('productID:', productID, 'action:', action)
-
         console.log('USER:', user)
+
         if (user == 'AnonymousUser'){
             console.log('User is not authenticated')
 

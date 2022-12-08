@@ -35,15 +35,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'store:cart' %}">Cart</a>
                 </li>
+                <li>
+                  
+                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="{% url 'store:checkout' %}">Checkout</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
+                      {% if user.username %}
+                        <a href="{% url 'store:logout' %}">Đăng xuất</a>
+                      {% else %}
+                        <p><a href="{% url 'store:register' %}">Đăng ký</a>|<a href="{% url 'store:login' %}">Đăng nhập</a></p>
+                      {% endif %}
                     </div>
                 </li>
+                <li>
+                  {% if user.username %}
+                    <p class="text-primary">{{user.username}}</p>
+                  {% else %}
+                    <p>chưa đăng nhập</p>
+                  {% endif %}
+                </li>
+                
             </ul>
-
+            
             <form class="d-flex my-2 my-lg-0 sm-2">
                 <input class="form-control me-2 sm-2" type="text" placeholder="Search">
                 <button class="btn btn-success my-2 my-sm-0 me-2" type="submit">Search</button>
@@ -53,7 +67,6 @@
                 </a>
                 <p id="cart-total">0</p>
             </form>
-
         </div>
     </nav>
     <div class="text-success">
