@@ -26,9 +26,15 @@ def store(request):
 
 
 def cart(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        orders = invoice.order_set.all()
+    else:
+        orders=[]
+        invoice ={'total_items':0,'total_price':0}
+    
 
-    orders = Order.objects.filter(iID=4)
-        
     total_items = sum([i.quantity for i in orders])
     total_price = '{:,}'.format(sum([i.get_total for i in orders]))
     
@@ -39,7 +45,15 @@ def cart(request):
 
 
 def checkout(request):
-    orders = Order.objects.filter(iID=3)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        orders = invoice.order_set.all()
+    else:
+        orders=[]
+        invoice ={'total_items':0,'total_price':0}
+    
+    
     total_items = sum([i.quantity for i in orders])
     total_price = '{:,}'.format(sum([i.get_total for i in orders]))
     
