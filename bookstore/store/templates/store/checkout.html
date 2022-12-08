@@ -70,8 +70,8 @@
                 <div style="flex:1"><p>{{i.quantity}}</p></div>
             </div>
             {% endfor %}
-            <h5>Items: {{total_items}}</h5>
-            <h5>Total: {{total_price}}đ</h5>
+            <h5>Items: {{invoice.get_total_item}}</h5>
+            <h5>Total: {{invoice.get_total_price}}đ</h5>
         </div>
     </div>
 </div>

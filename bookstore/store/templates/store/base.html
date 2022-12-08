@@ -65,7 +65,7 @@
                 <a href="{% url 'store:cart' %}" class="">
                   <i class="fa-solid fa-cart-shopping fa-2xl" ></i>
                 </a>
-                <p id="cart-total">0</p>
+                <p id="cart-total">{{invoice.get_total_item}}</p>
             </form>
         </div>
     </nav>

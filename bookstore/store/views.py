@@ -14,14 +14,35 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
+            cus_name = request.POST["cus_name"]
+            cus_addr = request.POST["cus_addr"]
+            cus_phone = request.POST["cus_phone"]
+            cus = Customer.objects.create(
+                user=new_user, cus_name=cus_name, cus_addr=cus_addr, cus_phone=cus_phone)
+            print(new_user.username)
+            print(cus.cus_name)
+
             return HttpResponseRedirect('/')
     return render(request, 'store/pages/register.html', {'form': form})
 
 
 def store(request):
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        #orders = invoice.order_set.all()
+    else:
+        # when user not login
+        orders = []
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+
+    #total_items = invoice.get_total_item
+    #total_price = '{:,}'.format(sum([i.get_total for i in orders]))
+
     books = Product.objects.all()
-    context = {'books': books}
+    context = {'books': books, 'invoice': invoice}
     return render(request, 'store/store.html', context)
 
 
@@ -31,15 +52,14 @@ def cart(request):
         invoice, created = Invoice.objects.get_or_create(cusID=customer)
         orders = invoice.order_set.all()
     else:
-        orders=[]
-        invoice ={'total_items':0,'total_price':0}
-    
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        orders = []
 
-    total_items = sum([i.quantity for i in orders])
+    #total_items = sum([i.quantity for i in orders])
     total_price = '{:,}'.format(sum([i.get_total for i in orders]))
-    
-    context = {'orders': orders, 'total_items': total_items,
-               'total_price': total_price}
+
+    context = {'orders': orders, 'invoice': invoice, }
 
     return render(request, 'store/cart.html', context)
 
@@ -50,32 +70,28 @@ def checkout(request):
         invoice, created = Invoice.objects.get_or_create(cusID=customer)
         orders = invoice.order_set.all()
     else:
-        orders=[]
-        invoice ={'total_items':0,'total_price':0}
-    
-    
-    total_items = sum([i.quantity for i in orders])
-    total_price = '{:,}'.format(sum([i.get_total for i in orders]))
-    
-    context = {'orders': orders, 'total_items': total_items,
-               'total_price': total_price}
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        orders = []
 
+    context = {'orders': orders, 'invoice': invoice}
     return render(request, 'store/checkout.html', context)
+
 
 def updateItem(request):
     data = json.loads(request.body)
     productID = data['productID']
     action = data['action']
-    
+
     print('productID: ', productID)
     print('Action: ', action)
-    
+
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 
     invoice, created = Invoice.objects.get_or_create(cusID=customer)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
-    
+
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
@@ -85,6 +101,8 @@ def updateItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
     return JsonResponse('Item was added', safe=False)
+
+
 '''
 def index(request):
     books = Books.objects.all().values()

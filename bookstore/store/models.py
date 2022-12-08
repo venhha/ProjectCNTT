@@ -83,6 +83,18 @@ class Invoice(models.Model):
     def get_absolute_url(self):
         return reverse("invoice_detail", kwargs={"pk": self.pk})
     
+    @property
+    def get_total_item(self):
+        orders = self.order_set.all()
+        total = sum([i.quantity for i in orders])
+        print('get_total_items: ',total)
+        return total
+    @property
+    def get_total_price(self):
+        orders = self.order_set.all()
+        total = sum([i.get_total for i in orders])
+        print('get_total_price: ',total)
+        return total
     
 class Order(models.Model):
     oID = models.AutoField(primary_key=True)
