@@ -8,20 +8,21 @@ for(var i = 0; i < updateBtn.length; i++){
         
         console.log('productID:', productID, 'action:', action)
         console.log('USER:', user)
-
         if (user == 'AnonymousUser'){
             console.log('User is not authenticated')
 
         }else{
+            //console.log('productID:', productID, 'action:', action)
+            //console.log('USER:', user)
             updateUserOrder(productID, action)
         }
     })
 }
 
 function updateUserOrder(productID, action){
-    console.log('User is authenticated, sending data...')
-    var url = 'update_item/'
-    
+    console.log('(updateUserOrder) User is authenticated, sending data...')
+    var url = 'http://127.0.0.1:8000/update_item/'
+    //console.log(url)
     fetch(url,{
         method: 'POST',
         headers: {

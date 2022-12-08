@@ -83,9 +83,9 @@ def updateItem(request):
     productID = data['productID']
     action = data['action']
 
-    print('productID: ', productID)
-    print('Action: ', action)
-
+    #print('productID: ', productID)
+    #print('Action: ', action)
+    print("updateItem- view.py")
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 
