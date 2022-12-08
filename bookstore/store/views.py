@@ -16,7 +16,7 @@ def register(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
-    return render(request, 'store/register.html', {'form': form})
+    return render(request, 'store/pages/register.html', {'form': form})
 
 
 def store(request):
@@ -72,7 +72,7 @@ def updateItem(request):
     
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
-    
+
     invoice, created = Invoice.objects.get_or_create(cusID=customer)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
     

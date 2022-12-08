@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Trang đăng nhập</title>
+  <title>Trang đăng ký</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,20 +14,18 @@
 </head>
 
 <body>
+  <main>
     <a class="btn btn-primary mt-3 ms-3" href="{% url 'store:store' %}">Quay lại</a>
-    <a class="btn btn-success mt-3 ms-3" href="{% url 'store:register' %}">Đăng ký</a>
+    <a class="btn btn-success mt-3 ms-3" href="{% url 'store:login' %}">Đăng nhập</a>
     <center class="pt-5">
-        <form method="POST">
+      <form action="." method="POST">
         {% csrf_token %}
-        {% for key, value in form.errors.items %}
-            {{value}}
-        {% endfor %}
-        <p><label>Tài khoản:</label>{{form.username}}</p>
-        <p><label>Mật khẩu:</label>{{form.password}}</p>
-        <input type="hidden" name="next" value="/"/>
-        <input type="submit" value="Đăng nhập"/>
+        {{form.as_p}} <!--br line on fields|| as_p mean <p>--> 
+        <input class="btn btn-info" type="submit" value="Đăng ký"/>
     </form>
     </center>
+    
+  </main>
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">

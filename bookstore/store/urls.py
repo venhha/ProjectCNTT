@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views  #tránh nhầm vs view củ
 app_name = 'store'
 urlpatterns = [
 
-    path('', views.store, name="store"),
+    path('', views.store, name="store"), #url 'store:store'
     path('cart/', views.cart, name="cart"),
     path('checkout/', views.checkout, name="checkout"),
     path('update_item/', views.updateItem, name="update"),
