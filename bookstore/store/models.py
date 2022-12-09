@@ -39,7 +39,7 @@ class Product(models.Model):
     book_description = models.CharField(max_length=254, null=True)
 
     def __str__(self):
-        return str(self.book_name)
+        return str(self.pID)
 
     def get_absolute_url(self):
         return reverse("product_detail", kwargs={"pk": self.pk})
@@ -83,7 +83,7 @@ class Invoice(models.Model):
     ship_addr = models.CharField(null=True,max_length=254)
     
     def __str__(self):
-        return self.iID
+        return str(self.iID)
 
     def get_absolute_url(self):
         return reverse("invoice_detail", kwargs={"pk": self.pk})
@@ -111,7 +111,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return str(self.oID)
+        return self.oID
 
     def get_absolute_url(self):
         return reverse("oder_detail", kwargs={"pk": self.pk})
