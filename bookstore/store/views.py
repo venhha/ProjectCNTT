@@ -32,6 +32,7 @@ def store(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        #get_total_price = '{:,}'.format(sum([i.get_total_price for i in orders]))
         #orders = invoice.order_set.all()
     else:
         # when user not login
@@ -39,7 +40,7 @@ def store(request):
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
     #total_items = invoice.get_total_item
-    #total_price = '{:,}'.format(sum([i.get_total for i in orders]))
+    #invoice.get_total_price = '{:,}'.format(invoice.get_total_price)
 
     books = Product.objects.all()
     context = {'books': books, 'invoice': invoice}
@@ -57,9 +58,9 @@ def cart(request):
         orders = []
 
     #total_items = sum([i.quantity for i in orders])
-    total_price = '{:,}'.format(sum([i.get_total for i in orders]))
+    #total_price = '{:,}'.format(sum([i.get_total for i in orders]))
 
-    context = {'orders': orders, 'invoice': invoice, }
+    context = {'orders': orders, 'invoice': invoice,}
 
     return render(request, 'store/cart.html', context)
 
@@ -83,9 +84,9 @@ def updateItem(request):
     productID = data['productID']
     action = data['action']
 
-    #print('productID: ', productID)
-    #print('Action: ', action)
-    print("updateItem- view.py")
+    print('productID: ', productID)
+    print('Action: ', action)
+    #print("updateItem- view.py")
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 

@@ -35,24 +35,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'store:cart' %}">Cart</a>
                 </li>
-                <li>
-                  
-                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownId">
                       {% if user.username %}
                         <a href="{% url 'store:logout' %}">Đăng xuất</a>
                       {% else %}
-                        <p><a href="{% url 'store:register' %}">Đăng ký</a>|<a href="{% url 'store:login' %}">Đăng nhập</a></p>
+                        <p>
+                          <a href="{% url 'store:register' %}">Đăng ký</a> | 
+                          <a href="{% url 'store:login' %}">Đăng nhập</a>
+                        </p>
                       {% endif %}
                     </div>
+                    
                 </li>
+                
                 <li>
                   {% if user.username %}
-                    <p class="text-primary">{{user.username}}</p>
+                    <span class="badge text-bg-primary fs-6">Xin chào {{user.username}}</span>
                   {% else %}
-                    <p>Bạn chưa đăng nhập</p>
+                    <span class="badge text-bg-danger fs-6">Bạn chưa đăng nhập</span>
                   {% endif %}
                 </li>
                 
@@ -61,19 +64,21 @@
             <form class="d-flex my-2 my-lg-0 sm-2">
                 <input class="form-control me-2 sm-2" type="text" placeholder="Search">
                 <button class="btn btn-success my-2 my-sm-0 me-2" type="submit">Search</button>
-                <a href="/" class="btn btn-primary me-2" role="button">Login</a>
-                <a href="{% url 'store:cart' %}" class="">
-                  <i class="fa-solid fa-cart-shopping fa-2xl" ></i>
+                <!--<a href="/" class="btn btn-primary me-2" role="button">Login</a>-->
+                <a href="{% url 'store:cart' %}" class="" >
+                  <i class="fa-solid fa-cart-shopping fa-2xl" alt="Thanh toán" ></i>
                 </a>
                 <p id="cart-total">{{invoice.get_total_item}}</p>
             </form>
         </div>
+        
     </nav>
     <div class="text-success">
       <hr>
     </div>
   </header>
   <main class="container">
+    
     {% block content %} {% endblock content %}
   </main>
   <footer>
