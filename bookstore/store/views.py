@@ -31,7 +31,7 @@ def store(request):
 
     if request.user.is_authenticated:
         customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
         #get_total_price = '{:,}'.format(sum([i.get_total_price for i in orders]))
         #orders = invoice.order_set.all()
     else:
@@ -50,7 +50,7 @@ def store(request):
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
         orders = invoice.order_set.all()
     else:
         # when user not login
@@ -68,7 +68,7 @@ def cart(request):
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer)
+        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
         orders = invoice.order_set.all()
     else:
         # when user not login
@@ -92,6 +92,7 @@ def placeOrder(request):
     invoice.date_checkout = datetime.now()
     invoice.place_status = True
     invoice.ship_addr = addr
+    invoice.save()
     
     return JsonResponse('Đã đặt hàng', safe=False)
     
@@ -121,7 +122,7 @@ def updateItem(request):
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 
-    invoice, created = Invoice.objects.get_or_create(cusID=customer)
+    invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
 
     if action == 'add':

@@ -48,13 +48,13 @@
         </div>
     -->
     <div class="container mt-3 box-element" >
-        <form action="" id="form" data-action="place" data-invoice="{{invoice.iID}}">
+        <form onsubmit="press_submit()" action="" id="form" data-invoice="{{invoice.iID}}" data-action="place" >
             <h2 class="text-center">Thông tin giao nhận</h2>
             <div class="mb-3 mt-3">
               <label for="ship_addr" class="form-label">Địa chỉ nhận hàng:</label>
-              <input id="ship_addr" name="ship_addr" value="{{invoice.cusID.cus_addr}}" type="text" class="form-control" placeholder="Nhập địa chỉ nhận hàng">
+              <input id="ship_addr"  name="ship_addr" value="{{invoice.cusID.cus_addr}}" type="text" class="form-control" placeholder="Nhập địa chỉ nhận hàng">
             </div>
-            <button type="button" class="btn btn-primary">Đặt hàng</button>
+            <button type="submit" class="btn btn-primary">Đặt hàng</button>
         </form>
     </div>
 
