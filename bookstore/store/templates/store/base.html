@@ -22,10 +22,12 @@
     <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #ffffffcd">
 
         <a class="navbar-brand" href="{% url 'store:store' %}">
-          <img src="{% static 'img/logo.png' %}" alt="logo img" height="100">
+          <img class="myImageClass" src="{% static 'img/logo.png' %}" alt="logo img" height="100">
         </a>
         <button class="navbar-toggler d-lg-none bg-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation"></button>
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">

@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %} {% load static %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-4">
+    <img
+      src="{{p.book_img.url}}"
+      alt="hình"
+      class="img-thumbnail border-image"
+      style="border: 1px solid #000000"
+    />
+    <p class="text-center">Số lượng còn lại: {{p.book_stock}}</p>
+  </div>
+  <div class="col-6 text-left">
+    <h2>Mô tả về sách</h2>
+    <p>{{p.book_description}}</p>
+  </div>
+  <div class="col-2 border border-2">
+    <div>
+      <h3 class="text-center">Tác giả</h3>
+      <div>
+        <ul>
+          {% for au in p.get_author %}
+          <li><a href="#">{{au}}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="text-center">
+        <h3>Đánh giá</h3>
+        <p>{{p.book_star}}<i class="fa-solid fa-star"></i></p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

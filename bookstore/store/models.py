@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your models here.
 
 
@@ -42,8 +43,15 @@ class Product(models.Model):
         return str(self.pID)
 
     def get_absolute_url(self):
-        return reverse("product_detail", kwargs={"pk": self.pk})
-
+        #return f'/{self.slug}'
+        return reverse("store:product_detail", kwargs={"pID": self.pk})
+    @property
+    def get_author(self):
+        aus = self.author_set.all()
+        author_list = list(self.author_set.all())
+        for i in author_list:
+            print(i)        
+        return author_list
 
 class Author(models.Model):
 

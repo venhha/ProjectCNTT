@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect,  JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import json
 from datetime import datetime
 #from django.template import loader
@@ -45,7 +45,10 @@ def store(request):
     books = Product.objects.all()
     context = {'books': books, 'invoice': invoice}
     return render(request, 'store/store.html', context)
-
+def view_book_detail(request, pID):
+    p = Product.objects.get(pID=pID)
+    context = {'p': p}
+    return render(request, 'store/pages/product_detail.html', context)
 
 def cart(request):
     if request.user.is_authenticated:

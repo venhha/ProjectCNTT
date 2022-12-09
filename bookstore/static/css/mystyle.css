@@ -27,6 +27,10 @@ h1,h2,h3,h4,h5,h6{
 	padding: 10px;
 }
 
+.detail_img{
+	width: 100%;
+	height: 350px;
+}
 .thumbnail{
 	width: 100%;
 	height: 250px;

@@ -4,12 +4,13 @@ from django.contrib.auth import views as auth_views  #tránh nhầm vs view củ
 
 app_name = 'store'
 urlpatterns = [
-
+    #store
     path('', views.store, name="store"), #url 'store:store'
     path('cart/', views.cart, name="cart"),
     path('checkout/', views.checkout, name="checkout"),
     path('update_item/', views.updateItem, name="update"),
-
+    path('<int:pID>', views.view_book_detail, name="product_detail"),#view_detail
+    
     # login handle
     path('register/', views.register, name="register"),
     path('login/', auth_views.LoginView.as_view(template_name="store/pages/login.html"), name="login"),
