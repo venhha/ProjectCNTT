@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect,  JsonResponse
 import json
-
+from datetime import datetime
 #from django.template import loader
 #from django.urls import reverse
 # Create your views here.
@@ -60,7 +60,7 @@ def cart(request):
     #total_items = sum([i.quantity for i in orders])
     #total_price = '{:,}'.format(sum([i.get_total for i in orders]))
 
-    context = {'orders': orders, 'invoice': invoice,}
+    context = {'orders': orders, 'invoice': invoice}
 
     return render(request, 'store/cart.html', context)
 
@@ -78,7 +78,38 @@ def checkout(request):
     context = {'orders': orders, 'invoice': invoice}
     return render(request, 'store/checkout.html', context)
 
-
+def placeOrder(request):
+    data = json.loads(request.body)
+    addr = data['addr']
+    action = data['action']
+    iID = data['iID']
+    
+    print('ship_addr: ', addr)
+    print('action: ', action)
+    print('iID: ', iID)
+    
+    invoice = Invoice.objects.get(iID=iID)
+    invoice.date_checkout = datetime.now()
+    invoice.place_status = True
+    invoice.ship_addr = addr
+    
+    return JsonResponse('Đã đặt hàng', safe=False)
+    
+    '''if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice = Invoice.objects.get(cusID=customer)
+        orders = invoice.order_set.all()
+        print('yeye: ',invoice.iID)
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        orders = []'''
+    
+    '''ship_addr = request.POST["ship_addr"]
+    customer = request.user.customer
+    print(ship_addr)
+    print(customer)'''
+    
 def updateItem(request):
     data = json.loads(request.body)
     productID = data['productID']
@@ -97,6 +128,8 @@ def updateItem(request):
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
         orderItem.quantity = (orderItem.quantity - 1)
+    elif action == 'delete':
+        orderItem.quantity = 0
     orderItem.save()
 
     if orderItem.quantity <= 0:
@@ -104,6 +137,7 @@ def updateItem(request):
     return JsonResponse('Item was added', safe=False)
 
 
+    
 '''
 def index(request):
     books = Books.objects.all().values()

@@ -31,10 +31,11 @@
     <div class="box-element">
       <div class="cart-row">
         <div style="flex: 2"></div>
-        <div style="flex: 2"><strong>Item</strong></div>
-        <div style="flex: 1"><strong>Price</strong></div>
-        <div style="flex: 1"><strong>Quantity</strong></div>
-        <div style="flex: 1"><strong>Total</strong></div>
+        <div style="flex: 2"><strong>Sản phẩm</strong></div>
+        <div style="flex: 1"><strong>Giá</strong></div>
+        <div style="flex: 1"><strong>Số lượng</strong></div>
+        <div style="flex: 1"><strong>Tổng cộng</strong></div>
+        <div style="flex: 1"><strong>Xóa</strong></div>
       </div>
 
       {% for i in orders %}
@@ -52,6 +53,9 @@
           </div>
         </div>
         <div style="flex: 1"><p>{{i.get_total}}</p></div>
+        <div style="flex: 1">
+          <a data-product="{{i.pID.pID}}" data-action="delete" class="chg-quantity update-cart btn-close" type="button"></a>
+        </div>
       </div>
       {% endfor %}
     </div>

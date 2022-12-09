@@ -32,7 +32,7 @@ class Product(models.Model):
     book_name = models.CharField(max_length=50)
     catID = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     book_img = models.ImageField(
-        upload_to='uploads/', height_field=None, width_field=None, max_length=None, null=True)
+        upload_to='uploads/', height_field=None, width_field=None, max_length=None, null=True,  blank=True)
     book_price = models.IntegerField(default=0, null=False)
     book_stock = models.IntegerField(default=0, null=False)
     book_star = models.FloatField(null=True)
@@ -75,10 +75,15 @@ class Customer(models.Model):
 class Invoice(models.Model):
     iID = models.AutoField(primary_key=True)
     cusID = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False)
-    date = models.DateField(auto_now=False, auto_now_add=True, null=True)
-
+    date = models.DateField(auto_now=False, auto_now_add=True, null=True) #date create
+    #checkout info
+    date_checkout = models.DateField(null=True, auto_now=False, auto_now_add=False)
+    place_status = models.BooleanField(null=True, default=False) #đã đặt hàng chưa? 0: chưa đặt
+    status = models.BooleanField(null=True, default=False) #giao chưa? 0: giao chưa đến
+    ship_addr = models.CharField(null=True,max_length=254)
+    
     def __str__(self):
-        return self.cusID.cus_name
+        return self.iID
 
     def get_absolute_url(self):
         return reverse("invoice_detail", kwargs={"pk": self.pk})
