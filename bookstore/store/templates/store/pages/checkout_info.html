@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %} {% load static %} 
+{% block content %}
+<h1 class="text-center">Tình trạng đơn hàng</h1>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center g-5">
+        <div class="border col-1">Chi tiết</div>
+        <div class="border col">Tên khách hàng</div>
+        <div class="border col">Ngày thanh toán</div>
+        <div class="border col">Tình trạng</div>
+        <div class="border col">Tổng đơn hàng</div>
+    </div>
+    {% for i in invoice %}
+    <div class="row justify-content-center align-items-center g-5">
+        <div class="border col-1"><a href="#">Chi tiết</a></div>
+        <div class="border col"> {{ i.get_cus_name }} </div>
+        <div class="border col"> {{ i.get_date_checkout }} </div>
+        <div class="border col"> 
+            {% if i.status %}Đã giao hàng{% else %}Đang xử lí{% endif %}
+        </div>
+        <div class="border col"> {{ i.get_total_price }} đ</div>
+    </div>
+    {% endfor %}
+    
+</div>
+
+
+{% endblock %}

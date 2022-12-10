@@ -140,8 +140,19 @@ def updateItem(request):
         orderItem.delete()
     return JsonResponse('Item was added', safe=False)
 
-
-    
+def view_checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice = Invoice.objects.filter(cusID=customer, place_status=True)
+        #orders = invoice.order_set.all()
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        orders = []
+        
+        #'orders': orders,
+    context = { 'invoice': invoice}
+    return render(request, 'store/pages/checkout_info.html', context)
 '''
 def index(request):
     books = Books.objects.all().values()

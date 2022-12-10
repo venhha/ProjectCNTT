@@ -97,10 +97,18 @@ class Invoice(models.Model):
         return reverse("invoice_detail", kwargs={"pk": self.pk})
     
     @property
+    def get_cus_name(self):
+        return self.cusID.cus_name
+    @property
+    def get_date_checkout(self):
+        return self.date_checkout
+        
+    @property
     def get_total_item(self):
         orders = self.order_set.all()
         total = sum([i.quantity for i in orders])
         return total
+    
     @property
     def get_total_price(self):
         orders = self.order_set.all()
