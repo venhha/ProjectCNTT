@@ -8,13 +8,14 @@ function press_submit() {
     var action = this.dataset.action;
     console.log("place_addr:", addr, "action:", action, "iID:", iID);
     console.log("USER:", user);
-
     if (user == "AnonymousUser") {
       console.log("User is not authenticated");
+      console.debug;
     } else {
       placeOrder(addr, action, iID);
       alert_success();
       back_home();
+      console.debug;
     }
   });
 }
@@ -56,8 +57,8 @@ function placeOrder(addr, action, iID) {
 
     .then((data) => {
       console.log("data:", data);
-      console.debug;
-      //location.reload()
+      //console.debug;
+      location.reload()
     });
 }
 

@@ -7,7 +7,10 @@
 		{% for book in books %}
 		<div class="col">
 		  <div class="card h-100">
-			<img src="{{book.get_imgURL}}" class="card-img-top" alt="(Không có ảnh sản phẩm)">
+			<a href="{{ book.get_absolute_url }}">
+				<img style="" src="{{book.get_imgURL}}" class="card-img-top" alt="(Không có ảnh sản phẩm)">
+			</a>
+			
 			<div class="card-body text-center">
 			  <h5 class="card-title">{{book.book_name}}</h5>
 			  <div class="d-flex justify-content-end">
@@ -19,7 +22,7 @@
 					data-product={{book.pID}}
 					data-action="add">Thêm vào giỏ
 				</button>
-			  <a class="card-link btn btn-outline-success" href="{{ book.get_absolute_url }} ">View</a>
+			  <a class="card-link btn btn-outline-success" href="{{ book.get_absolute_url }}">View</a>
 			</div>
 			<div class="card-footer">
 			  <small class="text-muted">Last updated 3 mins ago</small>

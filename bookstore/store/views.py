@@ -45,6 +45,7 @@ def store(request):
     books = Product.objects.all()
     context = {'books': books, 'invoice': invoice}
     return render(request, 'store/store.html', context)
+
 def view_book_detail(request, pID):
     p = Product.objects.get(pID=pID)
     context = {'p': p}
@@ -140,7 +141,7 @@ def updateItem(request):
         orderItem.delete()
     return JsonResponse('Item was added', safe=False)
 
-def view_checkout(request):
+def view_checkout_info(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         invoice = Invoice.objects.filter(cusID=customer, place_status=True)
@@ -151,8 +152,15 @@ def view_checkout(request):
         orders = []
         
         #'orders': orders,
-    context = { 'invoice': invoice}
+    context = {'invoice': invoice}
     return render(request, 'store/pages/checkout_info.html', context)
+
+
+def view_checkout_detail(request, iID):
+    invoice = Invoice.objects.get(iID = iID)
+    orders = invoice.order_set.all()
+    context = {'invoice': invoice,'orders': orders,}
+    return render(request, 'store/pages/checkout_detail.html', context)
 '''
 def index(request):
     books = Books.objects.all().values()

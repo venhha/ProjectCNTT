@@ -3,7 +3,59 @@
 
 {% block content %}
 <div class="row">
+    {% if user.username %}
+        <div class="col-lg-6">
+            <div class="container mt-3 box-element" >
+                <form onsubmit="press_submit()" action="" id="form" data-invoice="{{invoice.iID}}" data-action="place" >
+                    <h2 class="text-center">Thông tin giao nhận</h2>
+                    <div class="mb-3 mt-3">
+                    <label for="ship_addr" class="form-label">Địa chỉ nhận hàng:</label>
+                    <input id="ship_addr"  name="ship_addr" value="{{invoice.cusID.cus_addr}}" type="text" class="form-control" placeholder="Nhập địa chỉ nhận hàng">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Đặt hàng</button>
+                </form>
+            </div>
+        </div>
+
     <div class="col-lg-6">
+        <div class="box-element">
+            <a  class="btn btn-outline-dark" href="{% url 'store:cart' %}">&#x2190; Back to Cart</a>
+            <hr>
+            <h3>Order Summary</h3>
+            <hr>
+
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src=""></div>
+                <div style="flex:2"><p>Tên sách</p></div>
+                <div style="flex:1"><p>Giá</p></div>
+                <div style="flex:1"><p>Số lượng</p></div>
+            </div>
+
+            {% for i in orders %}
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src="{{ i.pID.book_img.url}}"></div>
+                <div style="flex:2"><p>{{i.pID.book_name}}</p></div>
+                <div style="flex:1"><p>{{i.pID.book_price}}đ</p></div>
+                <div style="flex:1"><p>{{i.quantity}}</p></div>
+            </div>
+            {% endfor %}
+            <h5>Items: {{invoice.get_total_item}}</h5>
+            <h5>Total: {{invoice.get_total_price}}đ</h5>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            Bạn cần <a href="{% url 'store:login' %}" class="alert-link">đăng nhập</a>
+            hoặc <a href="{% url 'store:register' %}" class="alert-link">đăng ký</a> để mua hàng!
+        </div>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/checkout.js' %} "></script>
+{% endblock content %}
+
+
+
         <!--
         <div class="box-element" id="form-wrapper">
             <form id="form">
@@ -47,46 +99,3 @@
             <small>Paypal Options</small>
         </div>
     -->
-    <div class="container mt-3 box-element" >
-        <form onsubmit="press_submit()" action="" id="form" data-invoice="{{invoice.iID}}" data-action="place" >
-            <h2 class="text-center">Thông tin giao nhận</h2>
-            <div class="mb-3 mt-3">
-              <label for="ship_addr" class="form-label">Địa chỉ nhận hàng:</label>
-              <input id="ship_addr"  name="ship_addr" value="{{invoice.cusID.cus_addr}}" type="text" class="form-control" placeholder="Nhập địa chỉ nhận hàng">
-            </div>
-            <button type="submit" class="btn btn-primary">Đặt hàng</button>
-        </form>
-    </div>
-
-    </div>
-
-    <div class="col-lg-6">
-        <div class="box-element">
-            <a  class="btn btn-outline-dark" href="{% url 'store:cart' %}">&#x2190; Back to Cart</a>
-            <hr>
-            <h3>Order Summary</h3>
-            <hr>
-
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src=""></div>
-                <div style="flex:2"><p>Tên sách</p></div>
-                <div style="flex:1"><p>Giá</p></div>
-                <div style="flex:1"><p>Số lượng</p></div>
-            </div>
-
-            {% for i in orders %}
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{ i.pID.book_img.url}}"></div>
-                <div style="flex:2"><p>{{i.pID.book_name}}</p></div>
-                <div style="flex:1"><p>{{i.pID.book_price}}đ</p></div>
-                <div style="flex:1"><p>{{i.quantity}}</p></div>
-            </div>
-            {% endfor %}
-            <h5>Items: {{invoice.get_total_item}}</h5>
-            <h5>Total: {{invoice.get_total_price}}đ</h5>
-        </div>
-    </div>
-</div>
-<script src="{% static 'js/checkout.js' %} "></script>
-{% endblock content %}
-

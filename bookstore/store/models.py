@@ -45,6 +45,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         #return f'/{self.slug}'
         return reverse("store:product_detail", kwargs={"pID": self.pk})
+    
     @property
     def get_author(self):
         aus = self.author_set.all()
@@ -88,6 +89,7 @@ class Customer(models.Model):
 
     def get_absolute_url(self):
         return reverse("customer_detail", kwargs={"pk": self.pk})
+    
 
 class Invoice(models.Model):
     iID = models.AutoField(primary_key=True)
@@ -104,7 +106,7 @@ class Invoice(models.Model):
         return str(self.iID)
 
     def get_absolute_url(self):
-        return reverse("invoice_detail", kwargs={"pk": self.pk})
+        return reverse("store:checkout_detail", kwargs={"iID": self.pk})
     
     @property
     def get_cus_name(self):
@@ -130,6 +132,7 @@ class Order(models.Model):
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(null=False, default=0)
+
 
     @property
     def get_total(self):
