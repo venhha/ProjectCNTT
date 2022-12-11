@@ -2,23 +2,92 @@
 {% load static %}
 
 {% block content %}
-
-<div class="row">
-	{% for i in books %}
+<div class="container">
+	<div class="row row-cols-1 row-cols-md-4 g-4">
+		{% for book in books %}
+		<div class="col">
+		  <div class="card h-100">
+			<img src="{{book.get_imgURL}}" class="card-img-top" alt="(Không có ảnh sản phẩm)">
+			<div class="card-body text-center">
+			  <h5 class="card-title">{{book.book_name}}</h5>
+			  <div class="d-flex justify-content-end">
+				<h5 class="card-title">{{book.book_price}}đ</h5>
+			  </div>
+			  <hr>
+			  	<button
+					class="card-link btn btn-outline-success update-cart"
+					data-product={{book.pID}}
+					data-action="add">Thêm vào giỏ
+				</button>
+			  <a class="card-link btn btn-outline-success" href="{{ book.get_absolute_url }} ">View</a>
+			</div>
+			<div class="card-footer">
+			  <small class="text-muted">Last updated 3 mins ago</small>
+			</div>
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}
+<!-- 
+	
+	<div class="row">
+	{% for book in books %}
 	<div class="col-lg-3">
-		<img class="thumbnail" src="{{i.book_img.url}}">
-		<div class="box-element product">
-			<h6><strong>{{i.book_name}} </strong></h6>
+		<img class="img-thumbnail" src="{{book.book_img.url}}">
+		<div class="box-element">
+			<h6><strong>{{book.book_name}} </strong></h6>
 			<hr>
-
-			<button data-product={{i.pID}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-			<a class="btn btn-outline-success" href="{{ i.get_absolute_url }} ">View</a>
-			<h4 style="display: inline-block; float: right"><strong>{{i.book_price}}đ</strong></h4>
-
+			<button data-product={{book.pID}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+			<a class="btn btn-outline-success" href="{{ book.get_absolute_url }} ">View</a>
+			<h4 style="display: inline-block; float: right"><strong>{{book.book_price}}đ</strong></h4>
 		</div>
 	</div>
+
 	{% endfor %}
 </div>
+ -->
 
-{% endblock content %}
-
+{% comment %}<section style="background-color: #eee;">
+		<div class="container py-5">
+		  <div class="row">
+			<div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+			  <div class="card">
+				<div class="d-flex justify-content-between p-3">
+				  <p class="lead mb-0">Today's Combo Offer</p>
+				  <div
+					class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+					style="width: 35px; height: 35px;">
+					<p class="text-white mb-0 small">x4</p>
+				  </div>
+				</div>
+				<img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/4.webp"
+				  class="card-img-top" alt="Laptop" />
+				<div class="card-body">
+				  <div class="d-flex justify-content-between">
+					<p class="small"><a href="#!" class="text-muted">Laptops</a></p>
+					<p class="small text-danger"><s>$1099</s></p>
+				  </div>
+	  
+				  <div class="d-flex justify-content-between mb-3">
+					<h5 class="mb-0">HP Notebook</h5>
+					<h5 class="text-dark mb-0">$999</h5>
+				  </div>
+	  
+				  <div class="d-flex justify-content-between mb-2">
+					<p class="text-muted mb-0">Available: <span class="fw-bold">6</span></p>
+					<div class="ms-auto text-warning">
+					  <i class="fa fa-star"></i>
+					  <i class="fa fa-star"></i>
+					  <i class="fa fa-star"></i>
+					  <i class="fa fa-star"></i>
+					  <i class="fa fa-star"></i>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>{% endcomment %}

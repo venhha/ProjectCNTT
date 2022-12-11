@@ -37,7 +37,7 @@ class Product(models.Model):
     book_price = models.IntegerField(default=0, null=False)
     book_stock = models.IntegerField(default=0, null=False)
     book_star = models.FloatField(null=True)
-    book_description = models.CharField(max_length=254, null=True)
+    book_description = models.TextField(null=True)
 
     def __str__(self):
         return str(self.pID)
@@ -52,6 +52,15 @@ class Product(models.Model):
         for i in author_list:
             print(i)        
         return author_list
+    @property
+    def get_imgURL(self):
+        try:
+            url = self.book_img.url
+        except:
+            url = ''
+        return url
+
+
 
 class Author(models.Model):
 
@@ -83,7 +92,8 @@ class Customer(models.Model):
 class Invoice(models.Model):
     iID = models.AutoField(primary_key=True)
     cusID = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False)
-    date = models.DateField(auto_now=False, auto_now_add=True, null=True) #date create
+    #date create
+    date = models.DateField(auto_now=False, auto_now_add=True, null=True)
     #checkout info
     date_checkout = models.DateField(null=True, auto_now=False, auto_now_add=False)
     place_status = models.BooleanField(null=True, default=False) #đã đặt hàng chưa? 0: chưa đặt
