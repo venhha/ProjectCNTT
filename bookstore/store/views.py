@@ -48,7 +48,8 @@ def store(request):
 
 def view_book_detail(request, pID):
     p = Product.objects.get(pID=pID)
-    context = {'p': p}
+    orders = Order.objects.filter(pID=pID)
+    context = {'p': p, 'orders':orders}
     return render(request, 'store/pages/product_detail.html', context)
 
 def cart(request):
@@ -161,6 +162,22 @@ def view_checkout_detail(request, iID):
     orders = invoice.order_set.all()
     context = {'invoice': invoice,'orders': orders,}
     return render(request, 'store/pages/checkout_detail.html', context)
+
+def comment(request):
+    data = json.loads(request.body)
+    text = data['text']
+    action = data['action']
+    oID = data['oID']
+    
+    print('text: ', text)
+    print('action: ', action)
+    print('oID: ', oID)
+    
+    order = Order.objects.get(oID=oID)
+    order.comment = text
+    order.save()
+    
+    return JsonResponse('Đã ghi nhận đánh giá thành công', safe=False)
 '''
 def index(request):
     books = Books.objects.all().values()

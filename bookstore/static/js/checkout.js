@@ -1,25 +1,4 @@
 
-function press_submit() {
-  var form = document.getElementById("form");
-  form.addEventListener("click", function () {
-    var addr = document.getElementById("ship_addr").value;
-    var iID = this.dataset.invoice;
-    //data-place_addr={{i.pID}} data-action="place"
-    var action = this.dataset.action;
-    console.log("place_addr:", addr, "action:", action, "iID:", iID);
-    console.log("USER:", user);
-    if (user == "AnonymousUser") {
-      console.log("User is not authenticated");
-      console.debug;
-    } else {
-      placeOrder(addr, action, iID);
-      alert_success();
-      back_home();
-      console.debug;
-    }
-  });
-}
-
 var form = document.getElementById("form");
 form.addEventListener("submit", function () {
   var addr = document.getElementById("ship_addr").value;

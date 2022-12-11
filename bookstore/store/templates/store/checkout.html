@@ -4,9 +4,10 @@
 {% block content %}
 <div class="row">
     {% if user.username %}
+        {% if orders %}
         <div class="col-lg-6">
             <div class="container mt-3 box-element" >
-                <form onsubmit="press_submit()" action="" id="form" data-invoice="{{invoice.iID}}" data-action="place" >
+                <form action="" id="form" data-invoice="{{invoice.iID}}" data-action="place" >
                     <h2 class="text-center">Thông tin giao nhận</h2>
                     <div class="mb-3 mt-3">
                     <label for="ship_addr" class="form-label">Địa chỉ nhận hàng:</label>
@@ -16,7 +17,13 @@
                 </form>
             </div>
         </div>
-
+        {% else %}
+            <div class="col-lg-6">
+                <div class="alert alert-danger" role="alert">
+                    Giỏ hàng của bạn đang trống <a href="{% url 'store:store' %}" class="alert-link">quay lại</a> để mua hàng!
+                </div>
+            </div>
+        {% endif %}
     <div class="col-lg-6">
         <div class="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'store:cart' %}">&#x2190; Back to Cart</a>
@@ -43,12 +50,15 @@
             <h5>Total: {{invoice.get_total_price}}đ</h5>
         </div>
     </div>
+    <!-- ========== Start Thông báo cho khách nếu chưa đăng nhập ========== -->
     {% else %}
         <div class="alert alert-danger" role="alert">
             Bạn cần <a href="{% url 'store:login' %}" class="alert-link">đăng nhập</a>
             hoặc <a href="{% url 'store:register' %}" class="alert-link">đăng ký</a> để mua hàng!
         </div>
     {% endif %}
+    <!-- ========== End Thông báo cho khách nếu chưa đăng nhập ========== -->
+    
 </div>
 
 <script src="{% static 'js/checkout.js' %} "></script>

@@ -132,8 +132,12 @@ class Order(models.Model):
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(null=False, default=0)
+    #danh gia sp cua khach da mua hang
+    comment = models.TextField(null=True)
 
 
+    
+    
     @property
     def get_total(self):
         total = self.pID.book_price * self.quantity

@@ -18,6 +18,7 @@ urlpatterns = [
     
     # checkout
     path('place/', views.placeOrder, name='place'),
+    path('comment/', views.comment, name='comment'),
     path('checkout_info/', views.view_checkout_info, name='checkout_info'),
     path('checkout_info/<int:iID>', views.view_checkout_detail, name='checkout_detail'),
 

@@ -33,6 +33,18 @@
       <h3>Đánh giá</h3>
       <p>{{p.book_star}}<i class="fa-solid fa-star"></i></p>
     </div>
+    <!-- ========== Start Comment ========== -->
+    {% for o in orders %}
+    <div class="bg-info">
+      <ul>
+        {% if o.comment %}
+          <li>{{o.comment}}</li>
+        {% endif %}
+      </ul>
+    </div>
+    {% endfor %}
+    <!-- ========== End Comment ========== -->
+    
   </div>
 </div>
 
