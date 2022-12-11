@@ -34,15 +34,16 @@
       <p>{{p.book_star}}<i class="fa-solid fa-star"></i></p>
     </div>
     <!-- ========== Start Comment ========== -->
-    {% for o in orders %}
-    <div class="bg-info">
-      <ul>
-        {% if o.comment %}
-          <li>{{o.comment}}</li>
-        {% endif %}
-      </ul>
+    <div style="height: 10px;">
+      <h4>Bình luận:</h4>
+      {% for o in orders %}
+        <ul>
+          {% if o.comment %} <!--Check if comment not null-->
+            <li>{{o.comment}}</li>
+          {% endif %}
+        </ul>
+      {% endfor %}
     </div>
-    {% endfor %}
     <!-- ========== End Comment ========== -->
     
   </div>
