@@ -1,12 +1,8 @@
-{% extends 'store/base.html' %} {% load static %} 
-
-{% block content %}
+{% extends 'store/base.html' %} {% load static %} {% block content %}
 <div class="row">
   <div class="col-lg-12">
     <div class="box-element">
-      <a class="btn btn-outline-dark" href="{% url 'store:store' %}"
-        >&#x2190;Continue Shopping</a
-      >
+      <a class="btn btn-outline-dark" href="{% url 'store:store' %}">&#x2190;Continue Shopping</a>
       <br />
       <br />
       <table class="table">
@@ -18,12 +14,7 @@
             <h5>Total: <strong>{{invoice.get_total_price}}đ</strong></h5>
           </th>
           <th>
-            <a
-              style="float: right; margin: 5px"
-              class="btn btn-success"
-              href="{% url 'store:checkout' %}"
-              >Checkout</a
-            >
+            <a style="float: right; margin: 5px" class="btn btn-success" href="{% url 'store:checkout' %}" >Checkout</a>
           </th>
         </tr>
       </table>
@@ -50,28 +41,13 @@
         <div style="flex: 1">
           <p class="quantity">{{i.quantity}}</p>
           <div class="quantity">
-            <img
-              data-product="{{i.pID.pID}}"
-              data-action="add"
-              class="chg-quantity update-cart"
-              src="{% static 'img/arrow-up.png' %}"
-            />
-            <img
-              data-product="{{i.pID.pID}}"
-              data-action="remove"
-              class="chg-quantity update-cart"
-              src="{% static 'img/arrow-down.png' %}"
-            />
+            <img data-product="{{i.pID.pID}}" data-action="add" class="chg-quantity update-cart" src="{% static 'img/arrow-up.png' %}"/>
+            <img data-product="{{i.pID.pID}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'img/arrow-down.png' %}"/>
           </div>
         </div>
         <div style="flex: 1"><p>{{i.get_total}}</p></div>
         <div style="flex: 1">
-          <a
-            data-product="{{i.pID.pID}}"
-            data-action="delete"
-            class="chg-quantity update-cart btn-close"
-            type="button"
-          ></a>
+          <a data-product="{{i.pID.pID}}" data-action="delete" class="chg-quantity update-cart btn-close" type="button" ></a>
         </div>
       </div>
       {% endfor %}

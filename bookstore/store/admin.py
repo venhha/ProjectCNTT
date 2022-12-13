@@ -9,11 +9,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CateAdmin(admin.ModelAdmin):
     list_display = ['catID', 'cat_name', ]
+    
 # Register your models here.
 admin.site.register(Author)
 admin.site.register(Category, CateAdmin)
 admin.site.register(Product, ProductAdmin)
-
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Invoice)
 admin.site.register(Customer)

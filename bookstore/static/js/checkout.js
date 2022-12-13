@@ -1,5 +1,6 @@
 
 var form = document.getElementById("form");
+
 form.addEventListener("submit", function () {
   var addr = document.getElementById("ship_addr").value;
   var iID = this.dataset.invoice;

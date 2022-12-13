@@ -1,17 +1,31 @@
 var cmt = document.getElementById("comment");
+
 cmt.addEventListener("submit", function () {
   var text = document.getElementById("textarea").value;
   var oID = this.dataset.order;
   var action = this.dataset.action;
-  
+
   console.log("text:", text, "action:", action, "oID:", oID);
   console.log("USER:", user);
-  
+
   comment(text, action, oID);
   alert_success();
   back_home();
-  
 });
+
+function clickcmt() {
+  console.log("user comment!");
+  var text = document.getElementById("textarea").value;
+  var oID = this.dataset.order;
+  var action = this.dataset.action;
+
+  console.log("text:", text, "action:", action, "oID:", oID);
+  console.log("USER:", user);
+
+  comment(text, action, oID);
+  alert_success();
+  back_home();
+}
 
 function comment(text, action, oID) {
   console.log("(comment) User is authenticated, sending data...");

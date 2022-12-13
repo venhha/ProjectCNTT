@@ -4,16 +4,6 @@ from django.urls import reverse
 # Create your models here.
 
 
-class Books(models.Model):
-    book_name = models.CharField(max_length=255, null=True)
-    stock_num = models.IntegerField(default=0, null=False)
-    in_stock = models.BooleanField(default=False, null=False)
-
-    def get_absolute_url(self):
-        print(self)
-        # print("123")
-        return reverse("books_detail", kwargs={"pk": self.pk})
-        # return '/%s/' % self.id
 
 
 class Category(models.Model):
