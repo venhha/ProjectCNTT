@@ -1,4 +1,4 @@
-{% extends 'store/base.html' %}
+{% extends 'layouts/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -20,7 +20,7 @@
         {% else %}
             <div class="col-lg-6">
                 <div class="alert alert-danger" role="alert">
-                    Giỏ hàng của bạn đang trống <a href="{% url 'store:store' %}" class="alert-link">quay lại</a> để mua hàng!
+                    Giỏ hàng của bạn đang trống <a href="{% url 'store:home' %}" class="alert-link">quay lại</a> để mua hàng!
                 </div>
             </div>
         {% endif %}

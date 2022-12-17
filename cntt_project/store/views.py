@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import json
 from datetime import datetime
@@ -7,6 +7,30 @@ from datetime import datetime
 # Create your views here.
 from .models import *
 from .forms import RegistrationForm
+
+
+def index(request):
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+
+    books = Product.objects.all()
+    context = {'books': books, 'invoice': invoice}
+    return render(request, 'home/index.html', context)
+
+def error_404_view(request, exception):
+    return render(request, 'pages/404.html', {'message': exception})
+
+def book_detail_view(request, pID):
+    p = Product.objects.get(pID=pID)
+    orders = Order.objects.filter(pID=pID)
+    context = {'p': p, 'orders': orders}
+    return render(request, 'home/product/product_detail.html', context)
 
 
 def register(request):
@@ -24,56 +48,29 @@ def register(request):
             print(cus.cus_name)
 
             return HttpResponseRedirect('/')
-    return render(request, 'store/pages/register.html', {'form': form})
+    return render(request, 'home/accounts/register.html', {'form': form})
 
-
-def store(request):
-
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
-        #get_total_price = '{:,}'.format(sum([i.get_total_price for i in orders]))
-        #orders = invoice.order_set.all()
-    else:
-        # when user not login
-        orders = []
-        invoice = {'get_total_item': 0, 'get_total_price': 0}
-
-    #total_items = invoice.get_total_item
-    #invoice.get_total_price = '{:,}'.format(invoice.get_total_price)
-
-    books = Product.objects.all()
-    context = {'books': books, 'invoice': invoice}
-    return render(request, 'store/store.html', context)
-
-def view_book_detail(request, pID):
-    p = Product.objects.get(pID=pID)
-    orders = Order.objects.filter(pID=pID)
-    context = {'p': p, 'orders':orders}
-    return render(request, 'store/pages/product_detail.html', context)
 
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
         orders = invoice.order_set.all()
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
         orders = []
 
-    #total_items = sum([i.quantity for i in orders])
-    #total_price = '{:,}'.format(sum([i.get_total for i in orders]))
-
     context = {'orders': orders, 'invoice': invoice}
-
-    return render(request, 'store/cart.html', context)
+    return render(request, 'home/cart/cart.html', context)
 
 
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
         orders = invoice.order_set.all()
     else:
         # when user not login
@@ -81,26 +78,27 @@ def checkout(request):
         orders = []
 
     context = {'orders': orders, 'invoice': invoice}
-    return render(request, 'store/checkout.html', context)
+    return render(request, 'home/checkout/checkout.html', context)
+
 
 def placeOrder(request):
     data = json.loads(request.body)
     addr = data['addr']
     action = data['action']
     iID = data['iID']
-    
+
     print('ship_addr: ', addr)
     print('action: ', action)
     print('iID: ', iID)
-    
+
     invoice = Invoice.objects.get(iID=iID)
     invoice.date_checkout = datetime.now()
     invoice.place_status = True
     invoice.ship_addr = addr
     invoice.save()
-    
+
     return JsonResponse('Đã đặt hàng', safe=False)
-    
+
     '''if request.user.is_authenticated:
         customer = request.user.customer
         invoice = Invoice.objects.get(cusID=customer)
@@ -110,12 +108,13 @@ def placeOrder(request):
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
         orders = []'''
-    
+
     '''ship_addr = request.POST["ship_addr"]
     customer = request.user.customer
     print(ship_addr)
     print(customer)'''
-    
+
+
 def updateItem(request):
     data = json.loads(request.body)
     productID = data['productID']
@@ -127,7 +126,8 @@ def updateItem(request):
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 
-    invoice, created = Invoice.objects.get_or_create(cusID=customer, place_status=False)
+    invoice, created = Invoice.objects.get_or_create(
+        cusID=customer, place_status=False)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
 
     if action == 'add':
@@ -142,7 +142,8 @@ def updateItem(request):
         orderItem.delete()
     return JsonResponse('Item was added', safe=False)
 
-def view_checkout_info(request):
+
+def checkout_info_view(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         invoice = Invoice.objects.filter(cusID=customer, place_status=True)
@@ -151,33 +152,36 @@ def view_checkout_info(request):
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
         orders = []
-        
-        #'orders': orders,
+
+        # 'orders': orders,
     context = {'invoice': invoice}
-    return render(request, 'store/pages/checkout_info.html', context)
+    return render(request, 'home/checkout/checkout_info.html', context)
 
 
 def view_checkout_detail(request, iID):
-    invoice = Invoice.objects.get(iID = iID)
+    invoice = Invoice.objects.get(iID=iID)
     orders = invoice.order_set.all()
-    context = {'invoice': invoice,'orders': orders,}
-    return render(request, 'store/pages/checkout_detail.html', context)
+    context = {'invoice': invoice, 'orders': orders, }
+    return render(request, 'home/checkout/checkout_detail.html', context)
+
 
 def comment(request):
     data = json.loads(request.body)
     text = data['text']
     action = data['action']
     oID = data['oID']
-    
+
     print('text: ', text)
     print('action: ', action)
     print('oID: ', oID)
-    
+
     order = Order.objects.get(oID=oID)
     order.comment = text
     order.save()
-    
+
     return JsonResponse('Đã ghi nhận đánh giá thành công', safe=False)
+
+
 '''
 def index(request):
     books = Books.objects.all().values()

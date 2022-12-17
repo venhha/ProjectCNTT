@@ -13,5 +13,6 @@
             "username": "vscode",
             "password": "vscode"
         }
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "basic"
 }

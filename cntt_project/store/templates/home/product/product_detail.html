@@ -1,7 +1,11 @@
-{% extends 'store/base.html' %} {% load static %} {% block content %}
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+
+{% block content %}
 
 <div class="d-flex justify-content-start">
-  <a class="btn btn-danger" href="{% url 'store:store' %}">Quay lại</a>
+  <a class="btn btn-danger" href="{% url 'store:home' %}">Quay lại</a>
 </div>
 <br />
 <div class="row">

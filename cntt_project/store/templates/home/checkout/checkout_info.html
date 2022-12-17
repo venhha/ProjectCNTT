@@ -1,4 +1,4 @@
-{% extends 'store/base.html' %} {% load static %} 
+{% extends 'layouts/base.html' %} {% load static %} 
 {% block content %}
 <h1 class="text-center">Tình trạng đơn hàng</h1>
 
@@ -6,6 +6,7 @@
     <div class="row justify-content-center align-items-center g-5">
         <div class="border col-2">Chi tiết đơn</div>
         <div class="border col">Ngày thanh toán</div>
+        <div class="border col">Địa chỉ giao hàng</div>
         <div class="border col">Tình trạng</div>
         <div class="border col">Tổng đơn hàng</div>
     </div>
@@ -13,15 +14,13 @@
     <div class="row justify-content-center align-items-center g-5">
         <div class="border col-2"><a href="{{ i.get_absolute_url }}">Xem thêm</a></div>
         <div class="border col"> {{ i.get_date_checkout }} </div>
+        <div class="border col">{{i.ship_addr}} </div>
         <div class="border col"> 
-
             {% if i.status %}Đã giao hàng{% else %}Đang xử lí{% endif %}
         </div>
         <div class="border col"> {{ i.get_total_price }} đ</div>
     </div>
     {% endfor %}
-    
 </div>
-
 
 {% endblock %}

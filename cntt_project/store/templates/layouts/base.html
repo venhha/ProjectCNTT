@@ -28,11 +28,14 @@
 
 
 <body>
+  <!-- ========== Start test nav ========== -->
+  
+  <!-- ========== End test nav ========== -->
   <header>
     <!-- ========== Start navigation bar ========== -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{% url 'store:store' %}">
+        <a class="navbar-brand" href="{% url 'store:home' %}">
           <img class="myImageClass" src="{% static 'img/logo400x200.png' %}" alt="logo img" height="80">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -42,35 +45,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'store:store' %}" aria-current="page">Home <span
-                  class="visually-hidden">(current)</span></a>
+              <a class="nav-link fw-bold" href="{% url 'store:home' %}">Home</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">Tài khoản</a>
-              <div class="dropdown-menu" aria-labelledby="dropdownId">
-                {% if user.username %}
-                  <a class="btn btn-danger" href="{% url 'store:logout' %}">Đăng xuất</a>
-                <br>
-                <a class="btn btn-info" href="{% url 'store:checkout_info' %}">Đơn hàng</a>
-                {% else %}
-                <p>
-                  <a class="btn btn-info" href="{% url 'store:register' %}">Đăng ký</a>
-                  <br>
-                  <a class="btn btn-success" href="{% url 'store:login' %}">Đăng nhập</a>
-                </p>
-                {% endif %}
-              </div>
-            </li>
-
+            {% if user.username %}
             <li>
-              {% if user.username %}
-              <span class="badge text-bg-primary fs-6">Xin chào {{user.username}}</span>
-              {% else %}
-              <span class="badge text-bg-danger fs-6">Bạn chưa đăng nhập</span>
-              {% endif %}
+              <a class="nav-link fw-bold" href="{% url 'store:checkout_info' %}">Xem đơn hàng
+                <span class="badge text-bg-info">{{user.username}}</span>
+              </a>
             </li>
+            {% endif %}
           </ul>
+
+          
 
           <form class="d-flex">
             <input disabled class="px-2" type="text" placeholder="Tìm kiếm" style="border-radius: 5px;">
@@ -80,6 +66,15 @@
               Cart
               <span class="badge bg-dark text-white ms-1 rounded-pill">{{invoice.get_total_item}}</span>
             </a>
+
+            <div class="ps-2">
+              {% if user.username %}
+                <a class="btn btn-danger" href="{% url 'store:logout' %}" style="border-radius: 5px;">Đăng xuất</a>
+              {% else %}
+                <a class="btn btn-success" href="{% url 'store:login' %}" style="border-radius: 5px;">Đăng nhập</a>
+              {% endif %}
+            </div>
+
           </form>
         </div>
       </div>
@@ -88,6 +83,7 @@
   </header>
   <hr>
   <main>
+    
     {% block content %} {% endblock content %}
     
   </main>
