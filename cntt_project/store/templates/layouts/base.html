@@ -19,74 +19,16 @@
   <!-- ========== End Section ========== -->
   
   <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
-
-  
 </head>
 
-
-
-
-
 <body>
-  <!-- ========== Start test nav ========== -->
-  
-  <!-- ========== End test nav ========== -->
-  <header>
-    <!-- ========== Start navigation bar ========== -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{% url 'store:home' %}">
-          <img class="myImageClass" src="{% static 'img/logo400x200.png' %}" alt="logo img" height="80">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="{% url 'store:home' %}">Home</a>
-            </li>
-            {% if user.username %}
-            <li>
-              <a class="nav-link fw-bold" href="{% url 'store:checkout_info' %}">Xem đơn hàng
-                <span class="badge text-bg-info">{{user.username}}</span>
-              </a>
-            </li>
-            {% endif %}
-          </ul>
+  <!-- ========== Start Header ========== -->
+  {% include 'includes/header.html' %}
+  <!-- ========== End Header ========== -->
 
-          
-
-          <form class="d-flex">
-            <input disabled class="px-2" type="text" placeholder="Tìm kiếm" style="border-radius: 5px;">
-            <button disabled class="btn btn-success mx-2" type="submit" style="border-radius: 5px;">Search</button>
-            <a href="{% url 'store:cart' %}" class="btn btn-outline-dark px-2" style="border-radius: 5px;">
-              <i class="bi-cart-fill me-1"></i>
-              Cart
-              <span class="badge bg-dark text-white ms-1 rounded-pill">{{invoice.get_total_item}}</span>
-            </a>
-
-            <div class="ps-2">
-              {% if user.username %}
-                <a class="btn btn-danger" href="{% url 'store:logout' %}" style="border-radius: 5px;">Đăng xuất</a>
-              {% else %}
-                <a class="btn btn-success" href="{% url 'store:login' %}" style="border-radius: 5px;">Đăng nhập</a>
-              {% endif %}
-            </div>
-
-          </form>
-        </div>
-      </div>
-    </nav>
-    <!-- ========== End navigation bar ========== -->
-  </header>
-  <hr>
-  <main>
-    
-    {% block content %} {% endblock content %}
-    
-  </main>
+  <!-- ========== Start Main ========== -->
+  {% block content %} {% endblock content %}
+  <!-- ========== End Main ========== -->
 
   <footer>
   </footer>
@@ -122,5 +64,4 @@
   </script>
 
 </body>
-
 </html>
