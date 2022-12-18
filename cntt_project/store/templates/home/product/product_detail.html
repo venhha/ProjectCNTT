@@ -1,15 +1,11 @@
-{% extends 'layouts/base.html' %}
-{% load static %}
-
-
-{% block content %}
+{% extends 'layouts/base.html' %} {% load static %} {% block content %}
 
 <div class="d-flex justify-content-start">
   <a class="btn btn-danger" href="{% url 'store:home' %}">Quay lại</a>
 </div>
 <br />
 <div class="row">
-  <div class="col-4">
+  <div class="col-3 card">
     <img
       src="{{p.get_imgURL}}"
       alt="không có ảnh"
@@ -18,7 +14,7 @@
     />
     <p class="text-center">Số lượng còn lại: {{p.book_stock}}</p>
   </div>
-  <div class="col-6 text-left">
+  <div class="col-7 text-left">
     <h2>Mô tả về sách</h2>
     <p>{{p.book_description}}</p>
   </div>
@@ -38,18 +34,18 @@
       <p>{{p.book_star}}<i class="fa-solid fa-star"></i></p>
     </div>
     <!-- ========== Start Comment ========== -->
-    <div style="height: 10px;">
+    <div style="height: 10px">
       <h4>Bình luận:</h4>
       {% for o in orders %}
-        <ul>
-          {% if o.comment %} <!--Check if comment not null-->
-            <li>{{o.comment}}</li>
-          {% endif %}
-        </ul>
+      <ul>
+        {% if o.comment %}
+        <!--Check if comment not null-->
+        <li>{{o.comment}}</li>
+        {% endif %}
+      </ul>
       {% endfor %}
     </div>
     <!-- ========== End Comment ========== -->
-    
   </div>
 </div>
 

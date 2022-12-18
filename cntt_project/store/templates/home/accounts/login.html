@@ -1,41 +1,32 @@
-<!doctype html>
-<html lang="en">
+{% extends 'layouts/base.html' %}
+{% block title %}<title>LOGIN PAGE</title>{% endblock %}
 
-<head>
-  <title>Trang đăng nhập</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS v5.2.1 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-</head>
-
-<body>
-    <a class="btn btn-primary mt-3 ms-3" href="{% url 'store:home' %}">Quay lại</a>
-    <a class="btn btn-success mt-3 ms-3" href="{% url 'store:register' %}">Đăng ký</a>
-    <center class="pt-5">
-      <form method="POST">
-        {% csrf_token %}
-        {% for key, value in form.errors.items %}
-            {{value}}
-        {% endfor %}
-        <p><label>Tài khoản:</label>{{form.username}}</p>
-        <p><label>Mật khẩu:</label>{{form.password}}</p>
-        <input type="hidden" name="next" value="/"/>
-        <input type="submit" value="Đăng nhập"/>
-      </form>
-    </center>
-  <!-- Bootstrap JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-  </script>
-</body>
-
-</html>
+{% block content %}
+  <center class="pt-5">
+    <form method="POST">
+      {% csrf_token %}
+      {% for key, value in form.errors.items %}
+          {{value}}
+      {% endfor %}
+      <p><label>Tài khoản:</label>{{form.username}}</p>
+      <p><label>Mật khẩu:</label>{{form.password}}</p>
+      <input type="hidden" name="next" value="/"/>
+      <input class="btn btn-success" type="submit" value="Đăng nhập"/>
+      <a class="btn btn-success" href="{% url 'store:register' %}">Đăng ký</a>
+    </form>
+  </center>
+  
+  <!-- ========== Start test ========== -->
+  <hr>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <input type="hidden" name="next" value="/"/>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  
+  <!-- ========== End test ========== -->
+  
+{% endblock content %}

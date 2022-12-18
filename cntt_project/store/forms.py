@@ -1,6 +1,7 @@
 from django import forms
 import re
 from django.contrib.auth.models import User
+from .models import Customer
 class RegistrationForm(forms.Form):
     username = forms.CharField(required=True,label='Tài khoản', max_length=30)
     password1 = forms.CharField(required=True,label='Mật khẩu', widget=forms.PasswordInput())
@@ -29,4 +30,9 @@ class RegistrationForm(forms.Form):
         raise forms.ValidationError("Tài khoản đã tồn tại")
     
     def save(self):
-        return User.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'], password=self.cleaned_data['password1'])
+        new_user =  User.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'], password=self.cleaned_data['password1'])
+        
+        cus_name = self.cleaned_data["cus_name"]
+        cus_addr = self.cleaned_data["cus_addr"]
+        cus_phone = self.cleaned_data["cus_phone"]
+        Customer.objects.create(user=new_user, cus_name=cus_name, cus_addr=cus_addr, cus_phone=cus_phone)

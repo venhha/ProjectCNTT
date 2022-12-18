@@ -23,10 +23,12 @@ def index(request):
     context = {'books': books, 'invoice': invoice}
     return render(request, 'home/index.html', context)
 
+
 def error_404_view(request, exception):
     return render(request, 'pages/404.html', {'message': exception})
 
-def book_detail_view(request, pID):
+
+def product_detail_view(request, pID):
     p = Product.objects.get(pID=pID)
     orders = Order.objects.filter(pID=pID)
     context = {'p': p, 'orders': orders}
@@ -38,15 +40,8 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            new_user = form.save()
-            cus_name = request.POST["cus_name"]
-            cus_addr = request.POST["cus_addr"]
-            cus_phone = request.POST["cus_phone"]
-            cus = Customer.objects.create(
-                user=new_user, cus_name=cus_name, cus_addr=cus_addr, cus_phone=cus_phone)
-            print(new_user.username)
-            print(cus.cus_name)
-
+            form.save()
+            print('Tạo người dùng thành công!')
             return HttpResponseRedirect('/')
     return render(request, 'home/accounts/register.html', {'form': form})
 
@@ -64,55 +59,6 @@ def cart(request):
 
     context = {'orders': orders, 'invoice': invoice}
     return render(request, 'home/cart/cart.html', context)
-
-
-def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        invoice, created = Invoice.objects.get_or_create(
-            cusID=customer, place_status=False)
-        orders = invoice.order_set.all()
-    else:
-        # when user not login
-        invoice = {'get_total_item': 0, 'get_total_price': 0}
-        orders = []
-
-    context = {'orders': orders, 'invoice': invoice}
-    return render(request, 'home/checkout/checkout.html', context)
-
-
-def placeOrder(request):
-    data = json.loads(request.body)
-    addr = data['addr']
-    action = data['action']
-    iID = data['iID']
-
-    print('ship_addr: ', addr)
-    print('action: ', action)
-    print('iID: ', iID)
-
-    invoice = Invoice.objects.get(iID=iID)
-    invoice.date_checkout = datetime.now()
-    invoice.place_status = True
-    invoice.ship_addr = addr
-    invoice.save()
-
-    return JsonResponse('Đã đặt hàng', safe=False)
-
-    '''if request.user.is_authenticated:
-        customer = request.user.customer
-        invoice = Invoice.objects.get(cusID=customer)
-        orders = invoice.order_set.all()
-        print('yeye: ',invoice.iID)
-    else:
-        # when user not login
-        invoice = {'get_total_item': 0, 'get_total_price': 0}
-        orders = []'''
-
-    '''ship_addr = request.POST["ship_addr"]
-    customer = request.user.customer
-    print(ship_addr)
-    print(customer)'''
 
 
 def updateItem(request):
@@ -143,6 +89,40 @@ def updateItem(request):
     return JsonResponse('Item was added', safe=False)
 
 
+def checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
+        orders = invoice.order_set.all()
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        orders = []
+
+    context = {'orders': orders, 'invoice': invoice}
+    return render(request, 'home/checkout/checkout.html', context)
+
+
+def checkout_submit(request):
+    iID = request.POST['iID']
+    ship_addr = request.POST['ship_addr']
+
+    try:
+        i = Invoice.objects.get(iID=iID)
+        i.ship_addr = ship_addr
+        i.date_checkout = datetime.now()
+        i.place_status = True
+        i.save()
+
+        invoice = Invoice.objects.filter(
+            cusID=request.user.customer, place_status=True)
+        context = {'invoice': invoice}
+        return render(request, 'home/checkout/checkout_info.html', context)
+    except:
+        return HttpResponse("Đặt hàng không thành công")
+
+
 def checkout_info_view(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -151,7 +131,6 @@ def checkout_info_view(request):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-        orders = []
 
         # 'orders': orders,
     context = {'invoice': invoice}
@@ -221,3 +200,37 @@ def updaterecord(request, id):
     book.save()
     return HttpResponseRedirect(reverse('pages/index'))
 '''
+
+"""def placeOrder(request):
+data = json.loads(request.body)
+addr = data['addr']
+action = data['action']
+iID = data['iID']
+
+print('ship_addr: ', addr)
+print('action: ', action)
+print('iID: ', iID)
+
+invoice = Invoice.objects.get(iID=iID)
+invoice.date_checkout = datetime.now()
+invoice.place_status = True
+invoice.ship_addr = addr
+invoice.save()
+
+return JsonResponse('Đã đặt hàng', safe=False)
+
+if request.user.is_authenticated:
+    customer = request.user.customer
+    invoice = Invoice.objects.get(cusID=customer)
+    orders = invoice.order_set.all()
+    print('yeye: ',invoice.iID)
+else:
+    # when user not login
+    invoice = {'get_total_item': 0, 'get_total_price': 0}
+    orders = []
+
+ship_addr = request.POST["ship_addr"]
+customer = request.user.customer
+print(ship_addr)
+print(customer)
+"""

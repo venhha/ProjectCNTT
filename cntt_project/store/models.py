@@ -4,8 +4,6 @@ from django.urls import reverse
 # Create your models here.
 
 
-
-
 class Category(models.Model):
 
     catID = models.AutoField(primary_key=True)
@@ -33,16 +31,17 @@ class Product(models.Model):
         return str(self.pID)
 
     def get_absolute_url(self):
-        #return f'/{self.slug}'
+        # return f'/{self.slug}'
         return reverse("store:product_detail", kwargs={"pID": self.pk})
-    
+
     @property
     def get_author(self):
         aus = self.author_set.all()
         author_list = list(self.author_set.all())
         for i in author_list:
-            print(i)        
+            print(i)
         return author_list
+
     @property
     def get_imgURL(self):
         try:
@@ -50,7 +49,6 @@ class Product(models.Model):
         except:
             url = ''
         return url
-
 
 
 class Author(models.Model):
@@ -69,7 +67,8 @@ class Author(models.Model):
 
 class Customer(models.Model):
     cusID = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, null=True, blank=True, on_delete = models.CASCADE)
+    user = models.OneToOneField(
+        User, null=True, blank=True, on_delete=models.CASCADE)
     cus_name = models.CharField(max_length=50)
     cus_addr = models.CharField(max_length=50)
     cus_phone = models.CharField(max_length=12)
@@ -79,55 +78,57 @@ class Customer(models.Model):
 
     def get_absolute_url(self):
         return reverse("customer_detail", kwargs={"pk": self.pk})
-    
+
 
 class Invoice(models.Model):
     iID = models.AutoField(primary_key=True)
     cusID = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False)
-    #date create
+    # date create
     date = models.DateField(auto_now=False, auto_now_add=True, null=True)
-    #checkout info
-    date_checkout = models.DateField(null=True, auto_now=False, auto_now_add=False)
-    place_status = models.BooleanField(null=True, default=False) #đã đặt hàng chưa? 0: chưa đặt
-    status = models.BooleanField(null=True, default=False) #giao chưa? 0: giao chưa đến
-    ship_addr = models.CharField(null=True,max_length=254)
-    
+    # checkout info
+    date_checkout = models.DateField(
+        null=True, auto_now=False, auto_now_add=False)
+    place_status = models.BooleanField(
+        null=True, default=False)  # đã đặt hàng chưa? 0: chưa đặt
+    # giao chưa? 0: giao chưa đến
+    status = models.BooleanField(null=True, default=False)
+    ship_addr = models.CharField(null=True, max_length=254)
+
     def __str__(self):
         return str(self.iID)
 
     def get_absolute_url(self):
         return reverse("store:checkout_detail", kwargs={"iID": self.pk})
-    
+
     @property
     def get_cus_name(self):
         return self.cusID.cus_name
+
     @property
     def get_date_checkout(self):
         return self.date_checkout
-        
+
     @property
     def get_total_item(self):
         orders = self.order_set.all()
         total = sum([i.quantity for i in orders])
         return total
-    
+
     @property
     def get_total_price(self):
         orders = self.order_set.all()
         total = sum([i.get_total for i in orders])
         return total
-    
+
+
 class Order(models.Model):
     oID = models.AutoField(primary_key=True)
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(null=False, default=0)
-    #danh gia sp cua khach da mua hang
+    # danh gia sp cua khach da mua hang
     comment = models.TextField(null=True)
 
-
-    
-    
     @property
     def get_total(self):
         total = self.pID.book_price * self.quantity
