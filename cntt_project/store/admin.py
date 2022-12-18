@@ -6,9 +6,13 @@ class OrderAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['pID', 'book_name', ]
-
+    list_filter = ['pID','book_name',]
+    search_fields = ['book_name']
+    
 class CateAdmin(admin.ModelAdmin):
-    list_display = ['catID', 'cat_name', ]
+    list_display = ['catID', 'cat_name', ] 
+    
+    
     
 # Register your models here.
 admin.site.register(Author)
