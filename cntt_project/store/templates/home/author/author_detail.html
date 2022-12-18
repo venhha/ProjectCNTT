@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+
+{% block content %}
+<h1>Tên tác giả {{author.au_name}} </h1>
+<h1>Tên tác giả {{author.au_star}} </h1>
+<ul>
+    {% for i in list_product %}
+        <li><a href="{{i.pID.get_absolute_url}}">{{i.pID.book_name}}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,39 +1,55 @@
-{% extends 'layouts/base.html' %}
-{% load static %}
-
-
+{% extends 'layouts/base.html' %} {% load static %}
+<!-- ========== Start show product ========== -->
 {% block content %}
 <div class="container">
-	<div class="row row-cols-2 row-cols-lg-4 g-4">
-		{% for book in books %}
-		<div class="col">
-		  <div class="card h-100">
-			<a href="{{ book.get_absolute_url }}">
-				<img style="" src="{{book.get_imgURL}}" class="card-img-top" alt="(Không có ảnh sản phẩm)">
-			</a>
-			
-			<div class="card-body text-center">
-			  <h5 class="card-title">{{book.book_name}}</h5>
-			  <div class="d-flex justify-content-end">
-				<h5 class="card-title">{{book.book_price}}đ</h5>
-			  </div>
-			  <hr>
-			  	<button
-					class="card-link btn btn-outline-success update-cart"
-					data-product={{book.pID}}
-					data-action="add">Thêm vào giỏ
-				</button>
-			  <a class="card-link btn btn-outline-success" href="{{ book.get_absolute_url }}">View</a>
-			</div>
-			<div class="card-footer">
-			  <small class="text-muted">Last updated 3 mins ago</small>
-			</div>
-		  </div>
-		</div>
-		{% endfor %}
-	</div>
+  <div class="row row-cols-2 row-cols-lg-6 g-4">
+    {% for book in books %}
+    <div class="col">
+      <div class="card h-100">
+        <!-- ========== Start card header ========== -->
+        <h5 class="card-header text-center bg-white mb-2">
+          Giá: {{book.book_price}}đ
+        </h5>
+        <!-- ========== End card header ========== -->
+
+        <!-- ========== Start card body ========== -->
+        <a href="{{ book.get_absolute_url }}">
+          <img
+            style=""
+            src="{{book.get_imgURL}}"
+            class="card-img-top"
+            alt="(Không có ảnh sản phẩm)"
+          />
+        </a>
+
+        <div class="card-body text-center">
+          <p>{{book.book_name}}</p>
+        </div>
+        <!-- ========== End card body ========== -->
+
+        <!-- ========== Start footer ========== -->
+        <div class="card-footer text-muted d-grid gap-2 col-12 mx-auto">
+          <button
+            class="btn btn-success update-cart"
+            data-product="{{book.pID}}"
+            data-action="add"
+          >
+            Thêm vào giỏ
+          </button>
+          <a class="btn btn-info" href="{{book.get_absolute_url}}">Xem thêm</a>
+        </div>
+        <!-- ========== End footer ========== -->
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock content %}
+<!-- ========== End show product ========== -->
+
+
+<!-- ========== END ========== -->
+
 <!-- 
 	
 	<div class="row">
@@ -53,45 +69,53 @@
 </div>
  -->
 
-{% comment %}<section style="background-color: #eee;">
-		<div class="container py-5">
-		  <div class="row">
-			<div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
-			  <div class="card">
-				<div class="d-flex justify-content-between p-3">
-				  <p class="lead mb-0">Today's Combo Offer</p>
-				  <div
-					class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
-					style="width: 35px; height: 35px;">
-					<p class="text-white mb-0 small">x4</p>
-				  </div>
-				</div>
-				<img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/4.webp"
-				  class="card-img-top" alt="Laptop" />
-				<div class="card-body">
-				  <div class="d-flex justify-content-between">
-					<p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-					<p class="small text-danger"><s>$1099</s></p>
-				  </div>
-	  
-				  <div class="d-flex justify-content-between mb-3">
-					<h5 class="mb-0">HP Notebook</h5>
-					<h5 class="text-dark mb-0">$999</h5>
-				  </div>
-	  
-				  <div class="d-flex justify-content-between mb-2">
-					<p class="text-muted mb-0">Available: <span class="fw-bold">6</span></p>
-					<div class="ms-auto text-warning">
-					  <i class="fa fa-star"></i>
-					  <i class="fa fa-star"></i>
-					  <i class="fa fa-star"></i>
-					  <i class="fa fa-star"></i>
-					  <i class="fa fa-star"></i>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  </section>{% endcomment %}
+{% comment %}
+<section style="background-color: #eee">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+        <div class="card">
+          <div class="d-flex justify-content-between p-3">
+            <p class="lead mb-0">Today's Combo Offer</p>
+            <div
+              class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+              style="width: 35px; height: 35px"
+            >
+              <p class="text-white mb-0 small">x4</p>
+            </div>
+          </div>
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/4.webp"
+            class="card-img-top"
+            alt="Laptop"
+          />
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
+              <p class="small text-danger"><s>$1099</s></p>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="mb-0">HP Notebook</h5>
+              <h5 class="text-dark mb-0">$999</h5>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+              <p class="text-muted mb-0">
+                Available: <span class="fw-bold">6</span>
+              </p>
+              <div class="ms-auto text-warning">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endcomment %}

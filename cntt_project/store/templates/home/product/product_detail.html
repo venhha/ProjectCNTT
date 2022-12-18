@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block content %}
 
 <div class="d-flex justify-content-start">
-  <a class="btn btn-danger" href="{% url 'store:home' %}">Quay lại</a>
+  <a class="btn btn-danger rounded" href="{% url 'store:home' %}">Quay lại</a>
 </div>
 <br />
 <div class="row">
@@ -10,9 +10,20 @@
       src="{{p.get_imgURL}}"
       alt="không có ảnh"
       class="img-thumbnail border-image"
-      style="border: 1px solid #000000; height: 400px"
+      style="border: 1px solid #000000; height: 350px"
     />
     <p class="text-center">Số lượng còn lại: {{p.book_stock}}</p>
+    <hr>
+    {% if user.username %}
+      <form action="{% url 'store:add_to_cart' %}" method="POST" class="d-flex justify-content-center">
+        {% csrf_token %}
+        <label for="quantity">Số lượng</label>
+        <input type="number" id="quantity" name="quantity" min="0" max="{{p.book_stock}}" class="mx-3">
+        <input type="hidden" name="pID" value="{{p.pID}}">
+        <input type="submit" value="Thêm vào giỏ" class="btn btn-success rounded">
+      </form>
+    {% endif %}
+    
   </div>
   <div class="col-7 text-left">
     <h2>Mô tả về sách</h2>
@@ -24,7 +35,7 @@
       <div>
         <ul>
           {% for au in p.get_author %}
-          <li><a href="#">{{au}}</a></li>
+          <li><a href="{{au.get_absolute_url}}">{{au.au_name}}</a></li>
           {% endfor %}
         </ul>
       </div>
@@ -48,5 +59,4 @@
     <!-- ========== End Comment ========== -->
   </div>
 </div>
-
 {% endblock %}

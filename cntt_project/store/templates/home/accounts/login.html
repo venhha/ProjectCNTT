@@ -11,22 +11,22 @@
       <p><label>Tài khoản:</label>{{form.username}}</p>
       <p><label>Mật khẩu:</label>{{form.password}}</p>
       <input type="hidden" name="next" value="/"/>
+      <a class="btn btn-success me-5" href="{% url 'store:register' %}">Đăng ký</a>
       <input class="btn btn-success" type="submit" value="Đăng nhập"/>
-      <a class="btn btn-success" href="{% url 'store:register' %}">Đăng ký</a>
+      
     </form>
   </center>
-  
-  <!-- ========== Start test ========== -->
-  <hr>
-  <div class="card">
-    <form method="post">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input type="hidden" name="next" value="/"/>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-  
-  <!-- ========== End test ========== -->
-  
 {% endblock content %}
+
+<!-- ========== Start test ========== -->
+{% comment %}<hr>
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="hidden" name="next" value="/"/>
+    <button type="submit">Login</button>
+  </form>
+</div>{% endcomment %}
+
+<!-- ========== End test ========== -->

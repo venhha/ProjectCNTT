@@ -29,10 +29,34 @@ def error_404_view(request, exception):
 
 
 def product_detail_view(request, pID):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+        
     p = Product.objects.get(pID=pID)
     orders = Order.objects.filter(pID=pID)
-    context = {'p': p, 'orders': orders}
+    context = {'p': p, 'orders': orders, 'invoice':invoice,}
     return render(request, 'home/product/product_detail.html', context)
+
+
+def author_detail_view(request, auID):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+    
+    author = Author.objects.get(auID=auID)
+    list_product = list(author.get_list_product)
+    
+    context = {'author': author, 'list_product': list_product, 'invoice':invoice,}
+    return render(request, 'home/author/author_detail.html', context)
 
 
 def register(request):
@@ -60,15 +84,37 @@ def cart(request):
     context = {'orders': orders, 'invoice': invoice}
     return render(request, 'home/cart/cart.html', context)
 
+def add_to_cart(request):
+    if request.user.is_authenticated:
+        try:
+            pID = request.POST['pID']
+            quantity = request.POST['quantity']
+            customer = request.user.customer
+            
+            product = Product.objects.get(pID=pID)
+            invoice, created = Invoice.objects.get_or_create(
+                cusID=customer, place_status=False)
+            order, created = Order.objects.get_or_create(iID=invoice, pID=product)
+
+            order.quantity = order.quantity + int(quantity)
+            order.save()
+            
+            all_product_list = Product.objects.all()
+            context = {'books': all_product_list, 'invoice': invoice}
+            return render(request, 'home/index.html', context)
+        except:
+            print("ERROR add_to_cart")
+            pass
+    return HttpResponse("Lỗi")
+        
+    
+
 
 def updateItem(request):
     data = json.loads(request.body)
     productID = data['productID']
     action = data['action']
-
-    print('productID: ', productID)
-    print('Action: ', action)
-    #print("updateItem- view.py")
+    
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 

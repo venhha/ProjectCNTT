@@ -15,7 +15,10 @@ urlpatterns = [
     #cart
     path('cart/', views.cart, name="cart"),
     path('update_item/', views.updateItem, name="update"),
+    path('add_to_cart/', views.add_to_cart, name="add_to_cart"),
     path('<int:pID>', views.product_detail_view, name="product_detail"),#view_product_detail
+    path('author/<int:auID>', views.author_detail_view, name="author_detail"),#view_author_detail
+
     
     # checkout
     path('checkout/', views.checkout, name="checkout"),

@@ -36,10 +36,7 @@ class Product(models.Model):
 
     @property
     def get_author(self):
-        aus = self.author_set.all()
         author_list = list(self.author_set.all())
-        for i in author_list:
-            print(i)
         return author_list
 
     @property
@@ -62,8 +59,13 @@ class Author(models.Model):
         return self.au_name
 
     def get_absolute_url(self):
-        return reverse("author_detail", kwargs={"pk": self.pk})
-
+        return reverse("store:author_detail", kwargs={"auID": self.pk})
+    
+    @property
+    def get_list_product(self):
+        print("HEKEHKJEFEKJBFKJ")
+        list = Author.objects.filter(auID=self.auID)
+        return list
 
 class Customer(models.Model):
     cusID = models.AutoField(primary_key=True)
