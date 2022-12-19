@@ -10,7 +10,6 @@ from .forms import RegistrationForm
 
 
 def index(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         invoice, created = Invoice.objects.get_or_create(
@@ -18,9 +17,25 @@ def index(request):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-
-    books = Product.objects.all()
-    context = {'books': books, 'invoice': invoice}
+        
+    if request.method == 'POST':
+        catID = request.POST['catID']
+        products = Product.objects.filter(catID=catID)
+        cates = Category.objects.all()
+        context = {
+            'products': products,
+            'invoice': invoice,
+            'cates':cates,
+        }
+        return render(request, 'home/index.html', context)
+    
+    products = Product.objects.all()
+    cates = Category.objects.all()
+    context = {
+        'products': products,
+        'invoice': invoice,
+        'cates':cates,
+        }
     return render(request, 'home/index.html', context)
 
 
