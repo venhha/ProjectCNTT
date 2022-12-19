@@ -1,34 +1,29 @@
-{% extends 'layouts/base.html' %} {% load static %}
+{% extends 'layouts/base.html' %} {% load static %} {% load humanize %}
+
 {% block content %}
+{% include 'includes/search_bar.html' %}
+
+{% if check_id == 2 %}
+
+  {{check_id}}checked
+
+{% endif %}
 
 <div class="container">
   <div class="row">
 
     <!-- ========== Start filter ========== -->
-    <div class="col-2">
-      <form action="." method="POST">
-        {% csrf_token %}
-        {% for cate in cates %}
-          <div class="form-check">
-            <input value="{{cate.catID}}" class="form-check-input" type="radio" name="catID" id="{{cate.catID}}">
-            <label class="form-check-label" for="{{cate.catID}}">
-              {{cate.cat_name}}
-            </label>
-          </div>
-        {% endfor %}
-        <input type="submit" value="Lọc" class="btn btn-info rounded">
-      </form> 
-    </div>
+    {% include 'includes/filter.html' %}
     <!-- ========== End filter ========== -->
     
     <!-- ========== Start show product ========== -->
-    <div class="col-10 row row-cols-2 row-cols-lg-6 g-4">
+    <div class="col-10 row row-cols-2 row-cols-lg-5">
       {% for book in products %}
-      <div class="col">
+      <div class="col mb-3">
         <div class="card h-100">
           <!-- ========== Start card header ========== -->
           <h5 class="card-header text-center bg-white mb-2">
-            Giá: {{book.book_price}}đ
+            Giá: {{book.book_price|intcomma}} đ
           </h5>
           <!-- ========== End card header ========== -->
   

@@ -26,9 +26,10 @@
           </li>
           {% endif %}
         </ul>
-        <form class="d-flex">
-          <input disabled class="px-2" type="text" placeholder="Tìm kiếm" style="border-radius: 5px;">
-          <button disabled class="btn btn-success mx-2" type="submit" style="border-radius: 5px;">Search</button>
+        <form class="d-flex" action="" method="POST">
+          {% csrf_token %}
+          <input class="px-2" type="text" placeholder="Tìm kiếm" style="border-radius: 5px;">
+          <button class="btn btn-success mx-2" type="submit" style="border-radius: 5px;">Search</button>
           <a href="{% url 'store:cart' %}" class="btn btn-outline-dark px-2" style="border-radius: 5px;">
             <i class="bi-cart-fill me-1"></i>
             Cart

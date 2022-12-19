@@ -1,4 +1,7 @@
-{% extends 'layouts/base.html' %} {% load static %} {% block content %}
+{% extends 'layouts/base.html' %} {% load static %}
+{% block title %}<title>Chi tiết sản phẩm</title>{% endblock title %}
+
+{% block content %}
 
 <div class="d-flex justify-content-start">
   <a class="btn btn-danger rounded" href="{% url 'store:home' %}">Quay lại</a>

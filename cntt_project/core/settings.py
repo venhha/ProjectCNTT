@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     #3rd parties
     'captcha',
+    #format
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

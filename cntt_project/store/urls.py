@@ -7,7 +7,7 @@ app_name = 'store'
 urlpatterns = [
     #home
     path('', views.index, name="home"), #url 'store:home'
-    
+    path('search/', views.index_search, name="search"),
     #account
     path('register/', views.register, name="register"),
     path('login/', auth_views.LoginView.as_view(template_name="home/accounts/login.html"), name="login"),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('cart/', views.cart, name="cart"),
     path('update_item/', views.updateItem, name="update"),
     path('add_to_cart/', views.add_to_cart, name="add_to_cart"),
-    path('<int:pID>', views.product_detail_view, name="product_detail"),#view_product_detail
+    path('product/<int:pID>', views.product_detail_view, name="product_detail"),#view_product_detail
     path('author/<int:auID>', views.author_detail_view, name="author_detail"),#view_author_detail
 
     

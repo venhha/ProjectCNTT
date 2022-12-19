@@ -19,15 +19,26 @@ def index(request):
         invoice = {'get_total_item': 0, 'get_total_price': 0}
         
     if request.method == 'POST':
-        catID = request.POST['catID']
-        products = Product.objects.filter(catID=catID)
-        cates = Category.objects.all()
-        context = {
-            'products': products,
-            'invoice': invoice,
-            'cates':cates,
-        }
-        return render(request, 'home/index.html', context)
+        try:
+            catID = request.POST['catID']   
+            products = Product.objects.filter(catID=catID)
+            cates = Category.objects.all()
+            context = {
+                'products': products,
+                'invoice': invoice,
+                'cates':cates,
+                'choose': Category.objects.get(catID=catID).cat_name
+            }
+            return render(request, 'home/index.html', context)
+        except:
+            products = Product.objects.all()
+            cates = Category.objects.all()
+            context = {
+                'products': products,
+                'invoice': invoice,
+                'cates':cates,
+            }
+            return render(request, 'home/index.html', context)
     
     products = Product.objects.all()
     cates = Category.objects.all()
@@ -38,6 +49,29 @@ def index(request):
         }
     return render(request, 'home/index.html', context)
 
+
+def index_search(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        invoice, created = Invoice.objects.get_or_create(
+            cusID=customer, place_status=False)
+    else:
+        # when user not login
+        invoice = {'get_total_item': 0, 'get_total_price': 0}
+    
+    try:
+        query = request.POST['search_query']
+    except:
+        query = ""
+        
+    products = Product.objects.filter(book_name__icontains = query)
+    cates = Category.objects.all()
+    context = {
+        'products': products,
+        'invoice': invoice,
+        'cates':cates,
+        }
+    return render(request, 'home/index.html', context)
 
 def error_404_view(request, exception):
     return render(request, 'pages/404.html', {'message': exception})
@@ -53,8 +87,7 @@ def product_detail_view(request, pID):
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
     p = Product.objects.get(pID=pID)
-    orders = Order.objects.filter(pID=pID)
-    context = {'p': p, 'orders': orders, 'invoice': invoice, }
+    context = {'p': p,}
     return render(request, 'home/product/product_detail.html', context)
 
 

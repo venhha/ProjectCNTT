@@ -1,20 +1,20 @@
-{% extends 'layouts/base.html' %} {% load static %} {% block content %}
+{% extends 'layouts/base.html' %} {% load static %} {% load humanize %} {% block content %} 
 <div class="row">
   <div class="col-lg-12">
     <div class="box-element">
-      <a class="btn btn-outline-dark" href="{% url 'store:home' %}">&#x2190;Continue Shopping</a>
+      <a class="btn btn-outline-dark" href="{% url 'store:home' %}">&#x2190;Quay lại</a>
       <br />
       <br />
       <table class="table">
         <tr>
           <th>
-            <h5>Items: <strong>{{invoice.get_total_item}}</strong></h5>
+            <h5>Số lượng: <strong>{{invoice.get_total_item}}</strong></h5>
           </th>
           <th>
-            <h5>Total: <strong>{{invoice.get_total_price}}đ</strong></h5>
+            <h5>Tổng cộng: <strong>{{invoice.get_total_price|intcomma}}đ</strong></h5>
           </th>
           <th>
-            <a style="float: right; margin: 5px" class="btn btn-success" href="{% url 'store:checkout' %}" >Checkout</a>
+            <a style="float: right; margin: 5px" class="btn btn-success" href="{% url 'store:checkout' %}" >Đặt hàng</a>
           </th>
         </tr>
       </table>

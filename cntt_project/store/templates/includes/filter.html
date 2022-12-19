@@ -1,0 +1,24 @@
+<!--included in index-->
+<div class="col-2 border">
+    <p>Thể loại: <strong class="text-info">{{choose}}</strong> </p>
+    <form action="." method="POST">
+      {% csrf_token %}
+      {% for cate in cates %}
+        <div class="form-check">
+          <input
+            name="catID" 
+            value="{{cate.catID}}" 
+            class="form-check-input" 
+            type="radio" 
+            id="{{cate.catID}}">
+          <label class="form-check-label" for="{{cate.catID}}">
+            {{cate.cat_name}}
+          </label>
+        </div>
+      {% endfor %}
+      <div class="mt-2">
+        <input type="submit" value="Lọc" class="btn btn-info rounded">
+        <a href="{% url 'store:home' %}" class="btn btn-danger rounded">Xóa</a>
+      </div>
+    </form> 
+  </div>

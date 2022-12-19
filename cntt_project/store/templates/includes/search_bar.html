@@ -1,0 +1,16 @@
+<div class="container mb-3" style="width: 400px">
+  <form action="{% url 'store:search' %}" method="post">
+    {% csrf_token %}
+    <div class="input-group rounded">
+      <input
+        name="search_query"
+        type="search"
+        class="form-control rounded"
+        placeholder="Tìm kiếm"
+      />
+      <button type="submit" class="btn btn-outline-primary ms-2">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
+</div>
