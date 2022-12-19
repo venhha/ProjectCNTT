@@ -16,6 +16,9 @@
             <a class="nav-link fw-bold" href="{% url 'store:home' %}">Home</a>
           </li>
           {% if user.username %}
+          <li class="nav-item">
+            <a class="nav-link fw-bold" href="{% url 'store:edit_profile' %}">Tài khoản</a>
+          </li>
           <li>
             <a class="nav-link fw-bold" href="{% url 'store:checkout_info' %}">Xem đơn hàng
               <span class="badge text-bg-info">{{user.username}}</span>

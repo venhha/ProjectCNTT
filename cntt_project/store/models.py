@@ -139,5 +139,6 @@ class Order(models.Model):
     def __str__(self):
         return self.oID
 
-    def get_absolute_url(self):
-        return reverse("oder_detail", kwargs={"pk": self.pk})
+    def get_absolute_cmt_url(self):
+        return reverse("store:order_comment", kwargs={"oID": self.pk})
+    

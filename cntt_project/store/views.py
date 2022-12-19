@@ -36,10 +36,10 @@ def product_detail_view(request, pID):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-        
+
     p = Product.objects.get(pID=pID)
     orders = Order.objects.filter(pID=pID)
-    context = {'p': p, 'orders': orders, 'invoice':invoice,}
+    context = {'p': p, 'orders': orders, 'invoice': invoice, }
     return render(request, 'home/product/product_detail.html', context)
 
 
@@ -51,11 +51,12 @@ def author_detail_view(request, auID):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-    
+
     author = Author.objects.get(auID=auID)
     list_product = list(author.get_list_product)
-    
-    context = {'author': author, 'list_product': list_product, 'invoice':invoice,}
+
+    context = {'author': author,
+               'list_product': list_product, 'invoice': invoice, }
     return render(request, 'home/author/author_detail.html', context)
 
 
@@ -68,6 +69,25 @@ def register(request):
             print('Tạo người dùng thành công!')
             return HttpResponseRedirect('/')
     return render(request, 'home/accounts/register.html', {'form': form})
+
+
+def edit_profile(request):
+
+    if request.method == 'POST':
+        try:
+            cus = Customer.objects.get(user=request.user)
+            cus.cus_name = request.POST['cus_name']
+            cus.cus_addr = request.POST['cus_addr']
+            cus.cus_phone = request.POST['cus_phone']
+            cus.save()
+            return render(request, 'home/accounts/edit_profile.html', {'cus': cus})
+        except:
+            return HttpResponse("Lỗi chỉnh sửa")
+
+    # request get
+    cus = Customer.objects.get(user=request.user)
+    context = {'cus': cus}
+    return render(request, 'home/accounts/edit_profile.html', context)
 
 
 def cart(request):
@@ -84,21 +104,23 @@ def cart(request):
     context = {'orders': orders, 'invoice': invoice}
     return render(request, 'home/cart/cart.html', context)
 
+
 def add_to_cart(request):
     if request.user.is_authenticated:
         try:
             pID = request.POST['pID']
             quantity = request.POST['quantity']
             customer = request.user.customer
-            
+
             product = Product.objects.get(pID=pID)
             invoice, created = Invoice.objects.get_or_create(
                 cusID=customer, place_status=False)
-            order, created = Order.objects.get_or_create(iID=invoice, pID=product)
+            order, created = Order.objects.get_or_create(
+                iID=invoice, pID=product)
 
             order.quantity = order.quantity + int(quantity)
             order.save()
-            
+
             all_product_list = Product.objects.all()
             context = {'books': all_product_list, 'invoice': invoice}
             return render(request, 'home/index.html', context)
@@ -106,15 +128,13 @@ def add_to_cart(request):
             print("ERROR add_to_cart")
             pass
     return HttpResponse("Lỗi")
-        
-    
 
 
 def updateItem(request):
     data = json.loads(request.body)
     productID = data['productID']
     action = data['action']
-    
+
     customer = request.user.customer
     product = Product.objects.get(pID=productID)
 
@@ -178,7 +198,6 @@ def checkout_info_view(request):
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
-        # 'orders': orders,
     context = {'invoice': invoice}
     return render(request, 'home/checkout/checkout_info.html', context)
 
@@ -190,6 +209,21 @@ def view_checkout_detail(request, iID):
     return render(request, 'home/checkout/checkout_detail.html', context)
 
 
+def order_comment(request, oID):
+    if request.method == 'POST':
+        try:
+            order = Order.objects.get(oID=oID)
+            order.comment = request.POST['cmt']
+            order.save()
+            
+            invoice = Invoice.objects.get(iID=order.iID.iID)
+            orders = invoice.order_set.all()
+            context = {'invoice': invoice, 'orders': orders, }
+            return render(request, 'home/checkout/checkout_detail.html', context)
+        except:
+            return HttpResponse("Lỗi bình luận")
+
+'''
 def comment(request):
     data = json.loads(request.body)
     text = data['text']
@@ -206,8 +240,6 @@ def comment(request):
 
     return JsonResponse('Đã ghi nhận đánh giá thành công', safe=False)
 
-
-'''
 def index(request):
     books = Books.objects.all().values()
     return render(request, 'pages/index.html', context={'books': books})

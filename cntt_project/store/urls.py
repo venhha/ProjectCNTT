@@ -7,10 +7,12 @@ app_name = 'store'
 urlpatterns = [
     #home
     path('', views.index, name="home"), #url 'store:home'
-    # login handle
+    
+    #account
     path('register/', views.register, name="register"),
     path('login/', auth_views.LoginView.as_view(template_name="home/accounts/login.html"), name="login"),
     path('logout/', auth_views.LogoutView.as_view(next_page='store:home'), name='logout'),
+    path('edit_profile/', views.edit_profile, name="edit_profile"),
     
     #cart
     path('cart/', views.cart, name="cart"),
@@ -25,7 +27,7 @@ urlpatterns = [
     path('checkout_submit/', views.checkout_submit, name='checkout_submit'),
     
     #other
-    path('comment/', views.comment, name='comment'),
+    path('comment/<int:oID>', views.order_comment, name='order_comment'),
     path('checkout_info/', views.checkout_info_view, name='checkout_info'),
-    path('checkout_info/<int:iID>', views.view_checkout_detail, name='checkout_detail'),
+    path('checkout_detail/<int:iID>', views.view_checkout_detail, name='checkout_detail'),
 ]

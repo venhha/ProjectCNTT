@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+{% block title %}<title>EDIT ACCOUNT</title>{% endblock %}
+
+
+{% block content %}
+    <div class="container" style="width:500px">
+        <form action="{% url 'store:edit_profile' %}" method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="cus_name" class="form-label">username</label>
+                <input disabled name="cus_name" type="text" class="form-control" id="cus_name" placeholder="Họ tên" value="{{user.username}}">
+
+                <label for="user_email" class="form-label">Email</label>
+                <input disabled name="user_email" type="text" class="form-control" id="user_email" placeholder="Nhập email của bạn" value="{{user.email}}">
+            </div>
+
+            <div class="mb-3">
+              <label for="cus_name" class="form-label">Họ tên</label>
+              <input name="cus_name" type="text" class="form-control" id="cus_name" placeholder="Họ tên" value="{{cus.cus_name}}">
+            </div>
+
+            <div class="mb-3">
+                <label for="cus_addr" class="form-label">Địa chỉ</label>
+                <input name="cus_addr" type="text" class="form-control" id="cus_addr" placeholder="Địa chỉ" value="{{cus.cus_addr}}">
+            </div>
+           
+            <div class="mb-3">
+                <label for="cus_phone" class="form-label">Số điện thoại</label>
+                <input name="cus_phone" type="text" class="form-control" id="cus_phone" placeholder="Số điện thoại" value="{{cus.cus_phone}}">
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-primary rounded">Sửa thông tin</button>
+          </form>
+    </div>
+{% endblock content %}

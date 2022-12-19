@@ -2,6 +2,10 @@ from django import forms
 import re
 from django.contrib.auth.models import User
 from .models import Customer
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
+
+
 class RegistrationForm(forms.Form):
     username = forms.CharField(required=True,label='Tài khoản', max_length=30)
     password1 = forms.CharField(required=True,label='Mật khẩu', widget=forms.PasswordInput())
@@ -10,6 +14,7 @@ class RegistrationForm(forms.Form):
     cus_name = forms.CharField(required=True,label='Họ tên',max_length=50)
     cus_addr = forms.CharField(required=True,label='Địa chỉ',max_length=50)
     cus_phone = forms.CharField(required=True,label='Số điện thoại',max_length=12)
+    captcha = ReCaptchaField()
 
     def clean_password2(self):
         if 'password1' in self.cleaned_data:

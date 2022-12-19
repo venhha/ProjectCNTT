@@ -1,50 +1,60 @@
-{% extends 'layouts/base.html' %} {% load static %} {% block content %}
-<h1 class="text-center">Chi tiết đơn hàng</h1>
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}<title>
+  Chi tiết đơn hàng</title
+>{% endblock %} {% block content %}
 
-<div class="box-element">
-  <div class="cart-row">
-    <div style="flex: 2"></div>
-    <div style="flex: 2"><strong>Sản phẩm</strong></div>
-    <div style="flex: 1"><strong>Giá</strong></div>
-    <div style="flex: 1"><strong>Số lượng</strong></div>
-    <div style="flex: 1"><strong>Tổng cộng</strong></div>
-    <div style="flex: 2"><strong>Đánh giá sản phẩm</strong></div>
-  </div>
-  <br />
-  {% for i in orders %}
-  <div class="cart-row">
-    <div style="flex: 2">
-      <img style="height: 200px" src="{{i.pID.book_img.url}}" />
-    </div>
-    <div style="flex: 2">
-      <p>{{i.pID.book_name}}</p>
-    </div>
-    <div style="flex: 1">
-      <p>{{i.pID.book_price}}</p>
-    </div>
-    <div style="flex: 1">
-      <p class="quantity">{{i.quantity}}</p>
-    </div>
-    <div style="flex: 1">
-      <p>{{i.get_total}}</p>
-    </div>
-    <div style="flex: 2">
-      <!--đánh giá sản phẩm-->
-      <form class="form" id="comment" action="#" data-action="cmt" data-order="{{i.oID}}">
-        <textarea class="form-control" placeholder="Bạn thấy sản phẩm này như thế nào?" id="textarea"
-          style="height: 200px">{{i.comment}}</textarea>
-        <br/>
-        <button type="submit" class="btn btn-primary">Đánh giá</button>
-      </form>
-    </div>
-  </div>
-  {% endfor %}
+<h3 class="text-center">Chi tiết đơn hàng</h3>
+<div class="d-flex justify-content-start">
+  <h4>Tổng đơn hàng: {{invoice.get_total_price}} đ</h4>
+</div>
+<h4>
+  Tình trạng đơn hàng: {% if invoice.status %}Đã giao hàng {% else %}Đang xử lí{% endif %}
+</h4>
 
-  <div class="d-flex justify-content-end">
-    <h4>Tổng đơn hàng: {{invoice.get_total_price}}</h4>
+<div class="container">
+  <div class="box-element">
+    <div class="cart-row">
+      <div style="flex: 2"></div>
+      <div style="flex: 2"><strong>Sản phẩm</strong></div>
+      <div style="flex: 1"><strong>Giá</strong></div>
+      <div style="flex: 1"><strong>Số lượng</strong></div>
+      <div style="flex: 1"><strong>Tổng cộng</strong></div>
+      <div style="flex: 2"><strong>Đánh giá sản phẩm</strong></div>
+    </div>
+    <br />
+    {% for order in orders %}
+    <div class="cart-row">
+      <div style="flex: 2">
+        <img style="height: 200px" src="{{order.pID.book_img.url}}" />
+      </div>
+      <div style="flex: 2">
+        <p>{{order.pID.book_name}}</p>
+      </div>
+      <div style="flex: 1">
+        <p>{{order.pID.book_price}}</p>
+      </div>
+      <div style="flex: 1">
+        <p class="quantity">{{order.quantity}}</p>
+      </div>
+      <div style="flex: 1">
+        <p>{{order.get_total}}</p>
+      </div>
+      <div style="flex: 2">
+        <!--đánh giá sản phẩm-->
+        <form action="{{order.get_absolute_cmt_url}}" method="POST">
+          {% csrf_token %}
+          <textarea
+            rows="5"
+            name="cmt"
+            class="form-control"
+            placeholder="Bạn thấy sản phẩm này như thế nào?">{{order.comment}}</textarea>
+          <button type="submit" class="btn btn-primary mt-3">Đánh giá</button>
+          <input type="hidden" name="oID" value="{{order.oID}}">
+        </form>
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </div>
-<script src="{% static 'js/comment.js' %}"></script>
 {% endblock %}
 
 <!-- ========== Start test ========== -->

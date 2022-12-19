@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #myapp
     'store.apps.StoreConfig',
+    #3rd parties
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +142,6 @@ try:
     from core.local_setting import *
 except ImportError:
     pass
+
+RECAPTCHA_PUBLIC_KEY = '6LcAuY0jAAAAAIqMeYnSnHpsRcHC4TAxY8fOTLmz'
+RECAPTCHA_PRIVATE_KEY = '6LcAuY0jAAAAAAvJQL4o3evCdtkihLNfEYYAWWS5'
