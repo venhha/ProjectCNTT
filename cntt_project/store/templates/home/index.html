@@ -3,12 +3,6 @@
 {% block content %}
 {% include 'includes/search_bar.html' %}
 
-{% if check_id == 2 %}
-
-  {{check_id}}checked
-
-{% endif %}
-
 <div class="container">
   <div class="row">
 
@@ -32,9 +26,13 @@
             <img
               style=""
               src="{{book.get_imgURL}}"
-              class="card-img-top"
+              class="card-img-top position-relative"
               alt="(Không có ảnh sản phẩm)"
             />
+            {% if book.book_stock <= 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">Hết</span>
+            {% endif %}
+            
           </a>
   
           <div class="card-body text-center">

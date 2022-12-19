@@ -17,16 +17,16 @@ def index(request):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-        
+
     if request.method == 'POST':
         try:
-            catID = request.POST['catID']   
+            catID = request.POST['catID']
             products = Product.objects.filter(catID=catID)
             cates = Category.objects.all()
             context = {
                 'products': products,
                 'invoice': invoice,
-                'cates':cates,
+                'cates': cates,
                 'choose': Category.objects.get(catID=catID).cat_name
             }
             return render(request, 'home/index.html', context)
@@ -36,17 +36,17 @@ def index(request):
             context = {
                 'products': products,
                 'invoice': invoice,
-                'cates':cates,
+                'cates': cates,
             }
             return render(request, 'home/index.html', context)
-    
+
     products = Product.objects.all()
     cates = Category.objects.all()
     context = {
         'products': products,
         'invoice': invoice,
-        'cates':cates,
-        }
+        'cates': cates,
+    }
     return render(request, 'home/index.html', context)
 
 
@@ -58,20 +58,21 @@ def index_search(request):
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
-    
+
     try:
         query = request.POST['search_query']
     except:
         query = ""
-        
-    products = Product.objects.filter(book_name__icontains = query)
+
+    products = Product.objects.filter(book_name__icontains=query)
     cates = Category.objects.all()
     context = {
         'products': products,
         'invoice': invoice,
-        'cates':cates,
-        }
+        'cates': cates,
+    }
     return render(request, 'home/index.html', context)
+
 
 def error_404_view(request, exception):
     return render(request, 'pages/404.html', {'message': exception})
@@ -87,7 +88,7 @@ def product_detail_view(request, pID):
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
     p = Product.objects.get(pID=pID)
-    context = {'p': p,}
+    context = {'p': p, 'invoice':invoice}
     return render(request, 'home/product/product_detail.html', context)
 
 
@@ -157,7 +158,7 @@ def add_to_cart(request):
     if request.user.is_authenticated:
         try:
             pID = request.POST['pID']
-            quantity = request.POST['quantity']
+            add_quantity = request.POST['quantity']
             customer = request.user.customer
 
             product = Product.objects.get(pID=pID)
@@ -166,16 +167,17 @@ def add_to_cart(request):
             order, created = Order.objects.get_or_create(
                 iID=invoice, pID=product)
 
-            order.quantity = order.quantity + int(quantity)
-            order.save()
-
-            all_product_list = Product.objects.all()
-            context = {'books': all_product_list, 'invoice': invoice}
-            return render(request, 'home/index.html', context)
+            if order.quantity < product.book_stock:
+                order.quantity = order.quantity + int(add_quantity)
+                order.save()
+                
+            orders = invoice.order_set.all()
+            context = {'orders': orders, 'invoice': invoice}
+            return redirect('store:home')
+            return render(request, 'home/cart/cart.html', context)
         except:
-            print("ERROR add_to_cart")
-            pass
-    return HttpResponse("Lỗi")
+            return HttpResponse("Lỗi thêm sản phẩm vào giỏ")
+    
 
 
 def updateItem(request):
@@ -190,7 +192,7 @@ def updateItem(request):
         cusID=customer, place_status=False)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
 
-    if action == 'add':
+    if action == 'add' and product.book_stock > 0 and orderItem.quantity < product.book_stock:
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
         orderItem.quantity = (orderItem.quantity - 1)
@@ -200,7 +202,7 @@ def updateItem(request):
 
     if orderItem.quantity <= 0:
         orderItem.delete()
-    return JsonResponse('Item was added', safe=False)
+    return JsonResponse('Item was updated', safe=False)
 
 
 def checkout(request):
@@ -263,13 +265,14 @@ def order_comment(request, oID):
             order = Order.objects.get(oID=oID)
             order.comment = request.POST['cmt']
             order.save()
-            
+
             invoice = Invoice.objects.get(iID=order.iID.iID)
             orders = invoice.order_set.all()
             context = {'invoice': invoice, 'orders': orders, }
             return render(request, 'home/checkout/checkout_detail.html', context)
         except:
             return HttpResponse("Lỗi bình luận")
+
 
 '''
 def comment(request):

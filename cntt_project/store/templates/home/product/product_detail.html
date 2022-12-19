@@ -21,7 +21,7 @@
       <form action="{% url 'store:add_to_cart' %}" method="POST" class="d-flex justify-content-center">
         {% csrf_token %}
         <label for="quantity">Số lượng</label>
-        <input type="number" id="quantity" name="quantity" min="0" max="{{p.book_stock}}" class="mx-3">
+        <input type="number" id="quantity" name="quantity" min="1" max="{{p.book_stock}}" value="1" class="mx-3">
         <input type="hidden" name="pID" value="{{p.pID}}">
         <input type="submit" value="Thêm vào giỏ" class="btn btn-success rounded">
       </form>
