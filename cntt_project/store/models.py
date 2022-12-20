@@ -63,7 +63,6 @@ class Author(models.Model):
     
     @property
     def get_list_product(self):
-        print("HEKEHKJEFEKJBFKJ")
         list = Author.objects.filter(auID=self.auID)
         return list
 
@@ -71,9 +70,9 @@ class Customer(models.Model):
     cusID = models.AutoField(primary_key=True)
     user = models.OneToOneField(
         User, null=True, blank=True, on_delete=models.CASCADE)
-    cus_name = models.CharField(max_length=50)
-    cus_addr = models.CharField(max_length=50)
-    cus_phone = models.CharField(max_length=12)
+    cus_name = models.CharField(max_length=50, null=True)
+    cus_addr = models.CharField(max_length=50, null=True)
+    cus_phone = models.CharField(max_length=12, null=True)
 
     def __str__(self):
         return self.cus_name
@@ -97,7 +96,7 @@ class Invoice(models.Model):
     ship_addr = models.CharField(null=True, max_length=254)
 
     def __str__(self):
-        return str(self.iID)
+        return str(self.cusID.cus_name)
 
     def get_absolute_url(self):
         return reverse("store:checkout_detail", kwargs={"iID": self.pk})
@@ -137,7 +136,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return self.oID
+        return str(self.oID)
 
     def get_absolute_cmt_url(self):
         return reverse("store:order_comment", kwargs={"oID": self.pk})

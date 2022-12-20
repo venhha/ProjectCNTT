@@ -7,11 +7,21 @@ from datetime import datetime
 # Create your views here.
 from .models import *
 from .forms import RegistrationForm
+from django.contrib import messages
 
 
 def index(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
+        try:
+            customer = request.user.customer
+        except:
+            customer = Customer.objects.create(
+                user = request.user,
+                cus_name = request.user.username
+            )
+            customer.save()
+            print("Link user thành công")
+            
         invoice, created = Invoice.objects.get_or_create(
             cusID=customer, place_status=False)
     else:
@@ -87,8 +97,9 @@ def product_detail_view(request, pID):
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
+    orders = Order.objects.filter(pID=pID)
     p = Product.objects.get(pID=pID)
-    context = {'p': p, 'invoice':invoice}
+    context = {'p': p, 'invoice': invoice, 'orders': orders}
     return render(request, 'home/product/product_detail.html', context)
 
 
@@ -120,6 +131,20 @@ def register(request):
     return render(request, 'home/accounts/register.html', {'form': form})
 
 
+def signup_redirect(request):
+    if request.user.is_authenticated:
+        try:
+            request.user.customer
+            return redirect('store:home')
+        except:
+            new_cus = Customer.objects.create(
+                user = request.user,
+                cus_name = request.user.username)
+            new_cus.save()
+            return redirect('store:home')
+    return redirect('store:home')
+
+
 def edit_profile(request):
 
     if request.method == 'POST':
@@ -129,6 +154,7 @@ def edit_profile(request):
             cus.cus_addr = request.POST['cus_addr']
             cus.cus_phone = request.POST['cus_phone']
             cus.save()
+            messages.success(request,'Sửa thông tin thành công!')
             return render(request, 'home/accounts/edit_profile.html', {'cus': cus})
         except:
             return HttpResponse("Lỗi chỉnh sửa")
@@ -170,14 +196,13 @@ def add_to_cart(request):
             if order.quantity < product.book_stock:
                 order.quantity = order.quantity + int(add_quantity)
                 order.save()
-                
+
             orders = invoice.order_set.all()
             context = {'orders': orders, 'invoice': invoice}
             return redirect('store:home')
             return render(request, 'home/cart/cart.html', context)
         except:
             return HttpResponse("Lỗi thêm sản phẩm vào giỏ")
-    
 
 
 def updateItem(request):
@@ -192,14 +217,19 @@ def updateItem(request):
         cusID=customer, place_status=False)
     orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
 
+    if (product.book_stock == 0):
+        messages.error(request, "Sách bạn chọn hiện tại đã hết hàng!")
+    
     if action == 'add' and product.book_stock > 0 and orderItem.quantity < product.book_stock:
         orderItem.quantity = (orderItem.quantity + 1)
+        messages.success(request, "Thêm vào giỏ hàng thành công!")
     elif action == 'remove':
         orderItem.quantity = (orderItem.quantity - 1)
     elif action == 'delete':
         orderItem.quantity = 0
+        messages.info(request, "Xóa khỏi giỏ hàng!")
     orderItem.save()
-
+    
     if orderItem.quantity <= 0:
         orderItem.delete()
     return JsonResponse('Item was updated', safe=False)
@@ -231,10 +261,7 @@ def checkout_submit(request):
         i.place_status = True
         i.save()
 
-        invoice = Invoice.objects.filter(
-            cusID=request.user.customer, place_status=True)
-        context = {'invoice': invoice}
-        return render(request, 'home/checkout/checkout_info.html', context)
+        return redirect('store:checkout_info')
     except:
         return HttpResponse("Đặt hàng không thành công")
 

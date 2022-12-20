@@ -1,4 +1,6 @@
 {% extends 'layouts/base.html' %}
+{% load socialaccount %}
+
 {% block title %}<title>LOGIN PAGE</title>{% endblock %}
 
 {% block content %}
@@ -14,7 +16,15 @@
         <input type="hidden" name="next" value="/"/>
         <a class="btn btn-success rounded" href="{% url 'store:register' %}">Đăng ký</a>
         <input class="btn btn-success rounded" type="submit" value="Đăng nhập"/>
+
+        <!-- ========== Start GOOGLE ========== -->
+        <p class="mt-5">Đăng nhập với:</p>
+        <a href="{% provider_login_url 'google'%}?next=/" class="btn btn-outline-primary">
+          Google <i class="fab fa-google"></i>
+        </a>
+        <!-- ========== End GOOGLE ========== -->
         
+
       </form>
     </div>
 {% endblock content %}

@@ -37,14 +37,47 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #myapp
+    # myapp
     'store.apps.StoreConfig',
-    #3rd parties
+    # 3rd parties
     'captcha',
-    #format
+    # format
     'django.contrib.humanize',
+    # google login
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
+# --------------------START GOOGLE------------------------------------
+
+# google login setting
+SITE_ID = 2
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+AUTHENTICATION_BACKENDS = [
+
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# --------------------END GOOGLE------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,7 +99,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth', #user.username
+                'django.contrib.auth.context_processors.auth',  # user.username
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -81,7 +114,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'projectcntt_db',
         'USER': 'root',
         'PASSWORD': 'root',

@@ -7,7 +7,8 @@
   <h4>Tổng đơn hàng: {{invoice.get_total_price}} đ</h4>
 </div>
 <h4>
-  Tình trạng đơn hàng: {% if invoice.status %}Đã giao hàng {% else %}Đang xử lí{% endif %}
+  Tình trạng đơn hàng: {% if invoice.status %}Đã giao hàng {% else %}Đang xử
+  lí{% endif %}
 </h4>
 
 <div class="container">
@@ -46,9 +47,9 @@
             rows="5"
             name="cmt"
             class="form-control"
-            placeholder="Bạn thấy sản phẩm này như thế nào?">{{order.comment}}</textarea>
+            placeholder="Bạn thấy sản phẩm này như thế nào?">{% if order.comment %}{{order.comment}}{% endif %}</textarea>
           <button type="submit" class="btn btn-primary mt-3">Đánh giá</button>
-          <input type="hidden" name="oID" value="{{order.oID}}">
+          <input type="hidden" name="oID" value="{{order.oID}}" />
         </form>
       </div>
     </div>
