@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-# Create your models here.
-
 
 class Category(models.Model):
 
@@ -138,4 +136,3 @@ class OrderItem(models.Model):
 
     def get_absolute_cmt_url(self):
         return reverse("store:order_comment", kwargs={"oID": self.pk})
-    
