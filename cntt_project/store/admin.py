@@ -18,6 +18,6 @@ class CateAdmin(admin.ModelAdmin):
 admin.site.register(Author)
 admin.site.register(Category, CateAdmin)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderAdmin)
 admin.site.register(Invoice)
 admin.site.register(Customer)

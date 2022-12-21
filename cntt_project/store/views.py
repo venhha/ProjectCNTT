@@ -97,7 +97,7 @@ def product_detail_view(request, pID):
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
 
-    orders = Order.objects.filter(pID=pID)
+    orders = OrderItem.objects.filter(pID=pID)
     p = Product.objects.get(pID=pID)
     context = {'p': p, 'invoice': invoice, 'orders': orders}
     return render(request, 'home/product/product_detail.html', context)
@@ -170,7 +170,7 @@ def cart(request):
         customer = request.user.customer
         invoice, created = Invoice.objects.get_or_create(
             cusID=customer, place_status=False)
-        orders = invoice.order_set.all()
+        orders = invoice.orderitem_set.all()
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
@@ -190,14 +190,14 @@ def add_to_cart(request):
             product = Product.objects.get(pID=pID)
             invoice, created = Invoice.objects.get_or_create(
                 cusID=customer, place_status=False)
-            order, created = Order.objects.get_or_create(
+            order, created = OrderItem.objects.get_or_create(
                 iID=invoice, pID=product)
 
             if order.quantity < product.book_stock:
                 order.quantity = order.quantity + int(add_quantity)
                 order.save()
 
-            orders = invoice.order_set.all()
+            orders = invoice.orderitem_set.all()
             context = {'orders': orders, 'invoice': invoice}
             return redirect('store:home')
             return render(request, 'home/cart/cart.html', context)
@@ -215,7 +215,7 @@ def updateItem(request):
 
     invoice, created = Invoice.objects.get_or_create(
         cusID=customer, place_status=False)
-    orderItem, created = Order.objects.get_or_create(iID=invoice, pID=product)
+    orderItem, created = OrderItem.objects.get_or_create(iID=invoice, pID=product)
 
     if (product.book_stock == 0):
         messages.error(request, "Sách bạn chọn hiện tại đã hết hàng!")
@@ -240,7 +240,7 @@ def checkout(request):
         customer = request.user.customer
         invoice, created = Invoice.objects.get_or_create(
             cusID=customer, place_status=False)
-        orders = invoice.order_set.all()
+        orders = invoice.orderitem_set.all()
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
@@ -270,7 +270,7 @@ def checkout_info_view(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         invoice = Invoice.objects.filter(cusID=customer, place_status=True)
-        #orders = invoice.order_set.all()
+        #orders = invoice.orderitem_set.all()
     else:
         # when user not login
         invoice = {'get_total_item': 0, 'get_total_price': 0}
@@ -281,7 +281,7 @@ def checkout_info_view(request):
 
 def view_checkout_detail(request, iID):
     invoice = Invoice.objects.get(iID=iID)
-    orders = invoice.order_set.all()
+    orders = invoice.orderitem_set.all()
     context = {'invoice': invoice, 'orders': orders, }
     return render(request, 'home/checkout/checkout_detail.html', context)
 
@@ -289,12 +289,12 @@ def view_checkout_detail(request, iID):
 def order_comment(request, oID):
     if request.method == 'POST':
         try:
-            order = Order.objects.get(oID=oID)
+            order = OrderItem.objects.get(oID=oID)
             order.comment = request.POST['cmt']
             order.save()
 
             invoice = Invoice.objects.get(iID=order.iID.iID)
-            orders = invoice.order_set.all()
+            orders = invoice.orderitem_set.all()
             context = {'invoice': invoice, 'orders': orders, }
             return render(request, 'home/checkout/checkout_detail.html', context)
         except:
@@ -312,7 +312,7 @@ def comment(request):
     print('action: ', action)
     print('oID: ', oID)
 
-    order = Order.objects.get(oID=oID)
+    order = OrderItem.objects.get(oID=oID)
     order.comment = text
     order.save()
 
@@ -378,7 +378,7 @@ return JsonResponse('Đã đặt hàng', safe=False)
 if request.user.is_authenticated:
     customer = request.user.customer
     invoice = Invoice.objects.get(cusID=customer)
-    orders = invoice.order_set.all()
+    orders = invoice.orderitem_set.all()
     print('yeye: ',invoice.iID)
 else:
     # when user not login

@@ -18,13 +18,12 @@ class Category(models.Model):
 
 class Product(models.Model):
     pID = models.AutoField(primary_key=True)
-    book_name = models.CharField(max_length=50)
+    book_name = models.CharField(max_length=100)
     catID = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     book_img = models.ImageField(
-        upload_to='uploads/', height_field=None, width_field=None, max_length=None, null=True,  blank=True)
+        upload_to='uploads/', height_field=None, width_field=None, max_length=None, null=True, blank=True)
     book_price = models.IntegerField(default=0, null=False)
     book_stock = models.IntegerField(default=0, null=False)
-    book_star = models.FloatField(null=True)
     book_description = models.TextField(null=True)
 
     def __str__(self):
@@ -53,7 +52,6 @@ class Author(models.Model):
     auID = models.AutoField(primary_key=True)
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     au_name = models.CharField(max_length=50)
-    au_star = models.FloatField(default=0)
 
     def __str__(self):
         return self.au_name
@@ -93,7 +91,7 @@ class Invoice(models.Model):
         null=True, default=False)  # đã đặt hàng chưa? 0: chưa đặt
     # giao chưa? 0: giao chưa đến
     status = models.BooleanField(null=True, default=False)
-    ship_addr = models.CharField(null=True, max_length=254)
+    ship_addr = models.CharField(null=True, max_length=150)
 
     def __str__(self):
         return str(self.cusID.cus_name)
@@ -111,24 +109,24 @@ class Invoice(models.Model):
 
     @property
     def get_total_item(self):
-        orders = self.order_set.all()
+        orders = self.orderitem_set.all()
         total = sum([i.quantity for i in orders])
         return total
 
     @property
     def get_total_price(self):
-        orders = self.order_set.all()
+        orders = self.orderitem_set.all()
         total = sum([i.get_total for i in orders])
         return total
 
 
-class Order(models.Model):
+class OrderItem(models.Model):
     oID = models.AutoField(primary_key=True)
     pID = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     iID = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
-    quantity = models.IntegerField(null=False, default=0)
+    quantity = models.PositiveSmallIntegerField(default=0, null= True)
     # danh gia sp cua khach da mua hang
-    comment = models.TextField(null=True)
+    comment = models.TextField(null=True, max_length=254)
 
     @property
     def get_total(self):
