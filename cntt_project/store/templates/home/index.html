@@ -7,11 +7,14 @@
   <div class="row">
 
     <!-- ========== Start filter ========== -->
-    {% include 'includes/filter.html' %}
+    <div class="col-2">
+      {% include 'includes/filter.html' %}
+    </div>
+    
     <!-- ========== End filter ========== -->
     
     <!-- ========== Start show product ========== -->
-    <div class="col-10 row row-cols-2 row-cols-lg-5">
+    <div class="col-10 row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5">
       {% for book in products %}
       <div class="col mb-3">
         <div class="card h-100">
@@ -60,6 +63,10 @@
     
   </div>
 </div>
+
+<!-- ========== Start footer ========== -->
+{% include 'includes/footer.html' %}
+<!-- ========== End footer ========== -->
 
 {% endblock content %}
 

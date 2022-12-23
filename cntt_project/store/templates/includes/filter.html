@@ -1,5 +1,5 @@
 <!--included in index-->
-<div class="col-2 border">
+<div>
     <p>Thể loại: <strong class="text-info">{{choose}}</strong> </p>
     <form action="." method="POST">
       {% csrf_token %}
@@ -16,9 +16,9 @@
           </label>
         </div>
       {% endfor %}
-      <div class="mt-2">
-        <input type="submit" value="Lọc" class="btn btn-info rounded">
-        <a href="{% url 'store:home' %}" class="btn btn-danger rounded">Xóa</a>
+      <div class="mx-2 my-2">
+        <input type="submit" value="Lọc" class="btn btn-info rounded mx-2 my-2">
+        <a href="{% url 'store:home' %}" class="btn btn-danger rounded mx-2 my-2">Xóa</a>
       </div>
     </form> 
-  </div>
+</div>

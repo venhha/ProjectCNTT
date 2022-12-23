@@ -19,6 +19,10 @@
             placeholder="Nhập địa chỉ nhận hàng"
           />
         </div>
+        <input checked disabled type="radio" class="form-check-input" id="payment_method"/>
+        <label for="payment_method">Thanh toán khi nhận hàng</label>
+        <br>
+        <br>
         <input type="hidden" name="iID" value="{{invoice.iID}}" />
         <button type="submit" class="btn btn-primary">Đặt hàng</button>
       </form>

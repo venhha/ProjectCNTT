@@ -256,11 +256,16 @@ def checkout_submit(request):
 
     try:
         i = Invoice.objects.get(iID=iID)
+        orders = i.orderitem_set.all()
+        for o in orders:
+            p = Product.objects.get(pID = o.pID.pID)
+            p.book_stock -= o.quantity
+            p.save()
         i.ship_addr = ship_addr
         i.date_checkout = datetime.now()
         i.place_status = True
         i.save()
-
+        messages.success(request,"Đặt hàng thành công!")
         return redirect('store:checkout_info')
     except:
         return HttpResponse("Đặt hàng không thành công")
