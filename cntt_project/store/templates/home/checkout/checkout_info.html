@@ -10,36 +10,22 @@
                     <th scope="col">Chi tiết đơn</th>
                     <th scope="col">Ngày thanh toán</th>
                     <th scope="col">Địa chỉ giao hàng</th>
+                    <th scope="col">Tình trạng</th>
+                    <th scope="col">Tổng đơn hàng</th>
                 </tr>
             </thead>
             <tbody>
+                {% for i in invoice %}
                 <tr class="">
-                    <td scope="row">R1C1</td>
-                    <td>R1C2</td>
-                    <td>R1C3</td>
+                    <td scope="row"><a href="{{ i.get_absolute_url }}">Xem thêm</a></td>
+                    <td>{{ i.get_date_checkout }}</td>
+                    <td>{{i.ship_addr}}</td>
+                    <td>{% if i.status %}Đã giao hàng{% else %}Đang xử lí{% endif %}</td>
+                    <td>{{ i.get_total_price }} đ</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-    
-    <div class="row justify-content-center align-items-center g-5">
-        <div class="border col-2">Chi tiết đơn</div>
-        <div class="border col">Ngày thanh toán</div>
-        <div class="border col">Địa chỉ giao hàng</div>
-        <div class="border col">Tình trạng</div>
-        <div class="border col">Tổng đơn hàng</div>
-    </div>
-    {% for i in invoice %}
-    <div class="row justify-content-center align-items-center g-5">
-        <div class="border col-2"><a href="{{ i.get_absolute_url }}">Xem thêm</a></div>
-        <div class="border col"> {{ i.get_date_checkout }} </div>
-        <div class="border col">{{i.ship_addr}} </div>
-        <div class="border col"> 
-            {% if i.status %}Đã giao hàng{% else %}Đang xử lí{% endif %}
-        </div>
-        <div class="border col"> {{ i.get_total_price }} đ</div>
-    </div>
-    {% endfor %}
-</div>
 
 {% endblock %}
